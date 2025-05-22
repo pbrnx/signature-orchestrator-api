@@ -115,6 +115,8 @@ app.use((req, _, next) => {
   next();
 });
 
+
+
 /* === /start === */
 app.get('/start', async (req, res) => {
   const { userEmail1, userEmail2, nodeId, attachId, workflowId, subworkflowId, taskId } = req.query;
@@ -213,10 +215,29 @@ async function triggerDisposition(agreementId, disposition){
   }
 }
 
-app.get('/webhook', (req, res) => res.status(200).send('pong'));
+// --- HANDSHAKE HEAD (necessário para Adobe validar o webhook) ---
+app.head('/webhook', (req, res) => {
+  res.setHeader('X-AdobeSign-ClientId', CLIENT_ID);
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).end();
+});
+
+// --- HANDSHAKE GET (necessário para Adobe validar o webhook) ---
+app.get('/webhook', (req, res) => {
+  if (req.query.challenge) {
+    // A Adobe espera receber de volta o valor de challenge em texto puro
+    res.setHeader('X-AdobeSign-ClientId', CLIENT_ID);
+    res.setHeader('Content-Type', 'text/plain');
+    return res.status(200).send(req.query.challenge);
+  }
+  // Se acessar sem challenge, devolve pong para teste manual
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).send('pong');
+});
+
+// --- HANDSHAKE POST + LÓGICA DO SEU WEBHOOK ---
 app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
-  const cid = req.headers['x-adobesign-clientid'] || req.headers['x-adobesign-client-id'];
-  if (cid) res.setHeader('X-AdobeSign-ClientId', cid);
+  res.setHeader('X-AdobeSign-ClientId', CLIENT_ID);
 
   // Parse seguro do corpo
   let payload = {};
@@ -227,7 +248,8 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
     return res.status(400).send('Invalid webhook payload');
   }
 
-  // Extrai informações principais
+  // Daqui pra baixo é igual ao seu código! (processa os eventos normalmente)
+  // --- Seu código de eventos do webhook aqui ---
   const agreementId = payload.event?.agreementId || payload.agreement?.id || payload.agreementId;
   const evt = payload.event?.eventType || payload.event || payload.type || 'UNKNOWN_EVENT';
   const participant = payload.event?.participantUserEmail || payload.participantUserEmail || 'unknown';
@@ -241,7 +263,6 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
     `  → Date: ${timestamp}`
   );
 
-  // Salva payload bruto (opcional)
   const logPath = process.env.NODE_ENV === "production"
     ? '/tmp/webhook_raw.log'
     : path.join(__dirname, '../logs/webhook_raw.log');
@@ -250,7 +271,6 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
     JSON.stringify(payload, null, 2) + '\n\n'
   );
 
-  // Validação do MAP
   if (!agreementId || !MAP[agreementId]) return res.status(200).send('OK');
   const info = MAP[agreementId];
 
@@ -265,10 +285,9 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
     'AGREEMENT_WORKFLOW_COMPLETED'
   ];
 
-  // NOVA LÓGICA: Garante ordem correta
   if (PDF_EVENTS.includes(evt)) {
     try {
-      await overwritePdf(agreementId); // <-- ESPERA O UPLOAD ACABAR!
+      await overwritePdf(agreementId);
       if (!info.sendonDone) {
         if (evt === 'AGREEMENT_REJECTED') {
           await triggerDisposition(agreementId, 'Rechazado');
@@ -282,11 +301,9 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
     return res.status(200).send('OK');
   }
 
-  // Se não for evento relevante, responde OK sem fazer nada
   res.status(200).send('OK');
 });
 
-app.head('/webhook', (req, res) => res.status(200).send('pong'));
 
 
 async function overwritePdf(agreementId, tries=0){
