@@ -355,6 +355,14 @@ async function overwritePdf(agreementId, tries = 0) {
   }
 }
 
+if (process.env.NODE_ENV === 'production') {
+  setInterval(() => {
+    axios.get(`${NGROK_HOST}/health`)
+      .then(() => logger.info('[KEEPALIVE] Ping interno OK'))
+      .catch(err => logger.warn(`[KEEPALIVE] Falha no ping interno: ${err.message}`));
+  }, 1000 * 60 * 10); 
+}
+
 
 app.use((_,res) => res.status(404).json({error:'Endpoint not found'}));
 
