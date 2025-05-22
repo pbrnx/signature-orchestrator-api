@@ -280,15 +280,6 @@ app.post('/webhook', express.json({limit:'100mb'}), async (req, res) => {
     `  → Date: ${timestamp}`
   );
 
-  const logPath = process.env.NODE_ENV === "production"
-    ? '/tmp/webhook_raw.log'
-    : path.join(__dirname, '../logs/webhook_raw.log');
-
-  fs.appendFileSync(
-    logPath,
-    JSON.stringify(payload, null, 2) + '\n\n'
-  );
-
   //if (!agreementId || !MAP[agreementId]) return res.status(200).send('OK');
   
   const info = MAP[agreementId];
