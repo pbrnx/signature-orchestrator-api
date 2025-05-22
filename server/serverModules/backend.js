@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 3000;
 /* === Adobe Sign Credentials=== */
 const CLIENT_ID     = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const NGROK_HOST = process.env.PUBLIC_URL || `http://localhost:${PORT}`;
+const NGROK_HOST = 'https://adobe-api-deploy.onrender.com';
 const REDIRECT_URI  = `${NGROK_HOST}/admin/callback`;
 const API_BASE      = 'https://api.na4.adobesign.com';
 const AUTH_BASE     = 'https://secure.na4.adobesign.com';
