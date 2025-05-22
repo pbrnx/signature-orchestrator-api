@@ -1,0 +1,793 @@
+[2025-05-20T18:22:05.824 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-20T18:24:04.041 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678499&attachId=678498&docName=CEDOC+-+ECM+Monitoramentos+-+Especifica%C3%A7%C3%A3o+funcional.pdf&workflowId=678502&subworkflowId=678502&taskId=2
+[2025-05-20T18:24:04.042 UTC] INFO: Signature request initiated
+  → Document: CEDOC - ECM Monitoramentos - Especificação funcional.pdf
+  → Node ID: 678499
+  → Target Folder ID: 678498
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T18:24:12.368 UTC] INFO: Signature requested: CBJCHBCAABAA-dTy5L9HiW-yj0KuIISV6xp0T0aYmh4g
+[2025-05-20T18:24:13.269 UTC] INFO: SendOn automático realizado para workflow 678502
+[2025-05-20T18:24:23.747 UTC] INFO: POST /webhook
+[2025-05-20T18:24:23.748 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAA-dTy5L9HiW-yj0KuIISV6xp0T0aYmh4g
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T18:24:23.748Z
+[2025-05-20T18:24:25.096 UTC] INFO: POST /webhook
+[2025-05-20T18:24:25.096 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAA-dTy5L9HiW-yj0KuIISV6xp0T0aYmh4g
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T18:24:25.096Z
+[2025-05-20T18:25:30.188 UTC] INFO: POST /webhook
+[2025-05-20T18:25:33.170 UTC] INFO: Webhook received
+  → Event: AGREEMENT_EMAIL_VIEWED
+  → Agreement ID: CBJCHBCAABAA-dTy5L9HiW-yj0KuIISV6xp0T0aYmh4g
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T18:25:33.170Z
+[2025-05-20T18:25:58.768 UTC] INFO: POST /webhook
+[2025-05-20T18:25:58.768 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_COMPLETED
+  → Agreement ID: CBJCHBCAABAA-dTy5L9HiW-yj0KuIISV6xp0T0aYmh4g
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T18:25:58.768Z
+[2025-05-20T18:26:01.342 UTC] INFO: PDF Overwritten: C:\Users\augus\Desktop\adobe api - backend only\server\inprocess\CEDOC - ECM Monitoramentos - Especificação funcional.pdf
+[2025-05-20T18:26:53.543 UTC] INFO: Sent to folder 678498 on Content Server
+[2025-05-20T18:27:10.663 UTC] INFO: POST /webhook
+[2025-05-20T18:27:10.663 UTC] INFO: Webhook received
+  → Event: AGREEMENT_EMAIL_VIEWED
+  → Agreement ID: CBJCHBCAABAA-dTy5L9HiW-yj0KuIISV6xp0T0aYmh4g
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T18:27:10.663Z
+[2025-05-20T18:27:27.069 UTC] INFO: POST /webhook
+[2025-05-20T18:27:27.070 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_COMPLETED
+  → Agreement ID: CBJCHBCAABAA-dTy5L9HiW-yj0KuIISV6xp0T0aYmh4g
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T18:27:27.070Z
+[2025-05-20T18:27:29.752 UTC] INFO: PDF Overwritten: C:\Users\augus\Desktop\adobe api - backend only\server\inprocess\CEDOC - ECM Monitoramentos - Especificação funcional.pdf
+[2025-05-20T18:27:32.282 UTC] INFO: Sent to folder 678498 on Content Server
+[2025-05-20T18:27:50.525 UTC] INFO: POST /webhook
+[2025-05-20T18:27:50.526 UTC] INFO: Webhook received
+  → Event: AGREEMENT_WORKFLOW_COMPLETED
+  → Agreement ID: CBJCHBCAABAA-dTy5L9HiW-yj0KuIISV6xp0T0aYmh4g
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T18:27:50.526Z
+[2025-05-20T18:27:53.145 UTC] INFO: PDF Overwritten: C:\Users\augus\Desktop\adobe api - backend only\server\inprocess\CEDOC - ECM Monitoramentos - Especificação funcional.pdf
+[2025-05-20T18:27:55.724 UTC] INFO: Sent to folder 678498 on Content Server
+[2025-05-20T18:27:57.057 UTC] INFO: SendOn task 3 (Firmado) done for workflow 678502
+[2025-05-20T19:24:32.033 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-20T19:24:35.028 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:24:35.029 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T19:24:40.831 UTC] INFO: Signature requested: CBJCHBCAABAAuLFW87RXMaOvWvTr_zScCEFXWubxpfTo
+[2025-05-20T19:24:41.420 UTC] INFO: SendOn automático realizado para workflow 678041
+[2025-05-20T19:24:49.724 UTC] INFO: POST /webhook
+[2025-05-20T19:24:49.725 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAuLFW87RXMaOvWvTr_zScCEFXWubxpfTo
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:24:49.725Z
+[2025-05-20T19:26:16.164 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-20T19:27:12.154 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:27:12.155 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T19:27:18.502 UTC] INFO: Signature requested: CBJCHBCAABAA7SjREtGgi4HQaEQhrwYtyVge0SOZs6Nt
+[2025-05-20T19:27:18.734 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"027cf21f-8a4f-4469-b097-b907435b0c79"}
+[2025-05-20T19:27:27.142 UTC] INFO: POST /webhook
+[2025-05-20T19:27:27.143 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAA7SjREtGgi4HQaEQhrwYtyVge0SOZs6Nt
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:27:27.143Z
+[2025-05-20T19:31:28.975 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:31:28.976 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com
+[2025-05-20T19:31:34.619 UTC] INFO: Signature requested: CBJCHBCAABAA5NjAIr1zpW3SZhEt2B4nRDburcvL_6pP
+[2025-05-20T19:31:34.850 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"2656b7e4-bcae-4bc2-96d0-001484efc7ad"}
+[2025-05-20T19:31:43.108 UTC] INFO: POST /webhook
+[2025-05-20T19:31:43.108 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAA5NjAIr1zpW3SZhEt2B4nRDburcvL_6pP
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:31:43.108Z
+[2025-05-20T19:34:31.776 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:34:31.777 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T19:34:36.805 UTC] INFO: Signature requested: CBJCHBCAABAAetFuQANaOKEqZIJtYos7nzUuyyRl10m6
+[2025-05-20T19:34:37.023 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"ce6a4a68-0543-41d1-9dbb-23e8cc715c4a"}
+[2025-05-20T19:34:46.478 UTC] INFO: POST /webhook
+[2025-05-20T19:34:46.479 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAetFuQANaOKEqZIJtYos7nzUuyyRl10m6
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:34:46.479Z
+[2025-05-20T19:36:24.483 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:36:24.484 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T19:36:29.866 UTC] INFO: Signature requested: CBJCHBCAABAAnyKbkgv7MrhQ4WBCvmNFWwYwekekO659
+[2025-05-20T19:36:30.091 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"47752dae-f91c-4b31-b627-dd649b572cd5"}
+[2025-05-20T19:36:37.319 UTC] INFO: POST /webhook
+[2025-05-20T19:36:37.320 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAnyKbkgv7MrhQ4WBCvmNFWwYwekekO659
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:36:37.320Z
+[2025-05-20T19:42:12.197 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-20T19:42:16.156 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:42:16.157 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T19:42:21.993 UTC] INFO: Signature requested: CBJCHBCAABAAlMuNlvYXTZ28JOlHsvKZ-WqzOaNVwl-_
+[2025-05-20T19:42:22.227 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"4206cd00-dad7-422b-b511-65a06a8e596e"}
+[2025-05-20T19:42:31.449 UTC] INFO: POST /webhook
+[2025-05-20T19:42:31.450 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAlMuNlvYXTZ28JOlHsvKZ-WqzOaNVwl-_
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:42:31.450Z
+[2025-05-20T19:42:47.735 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:42:47.736 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T19:42:52.998 UTC] INFO: Signature requested: CBJCHBCAABAAsB3pgqRtHRmk5bfiNbrHMeROs2LpTi3L
+[2025-05-20T19:42:53.268 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"458af3f6-0f41-4b12-abdf-6e2d6529737b"}
+[2025-05-20T19:43:02.551 UTC] INFO: POST /webhook
+[2025-05-20T19:43:02.552 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAsB3pgqRtHRmk5bfiNbrHMeROs2LpTi3L
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:43:02.552Z
+[2025-05-20T19:44:21.896 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:44:21.897 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T19:44:27.940 UTC] INFO: Signature requested: CBJCHBCAABAAo1bO3x866zY_t98trSTpmeLNS_rb1C6n
+[2025-05-20T19:44:28.161 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"d04ad0d1-e971-4984-b261-d9be8a51f24d"}
+[2025-05-20T19:44:37.520 UTC] INFO: POST /webhook
+[2025-05-20T19:44:37.521 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAo1bO3x866zY_t98trSTpmeLNS_rb1C6n
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:44:37.521Z
+[2025-05-20T19:47:20.466 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:47:20.466 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T19:47:26.901 UTC] INFO: Signature requested: CBJCHBCAABAA8osE8jOecsOZhoHqENhjkmXpujZTW4JJ
+[2025-05-20T19:47:27.165 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"d7827e7c-48a8-43f0-b41a-7c49c26fc5f1"}
+[2025-05-20T19:47:35.163 UTC] INFO: POST /webhook
+[2025-05-20T19:47:35.163 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAA8osE8jOecsOZhoHqENhjkmXpujZTW4JJ
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:47:35.163Z
+[2025-05-20T19:47:49.674 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:47:49.675 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T19:47:56.351 UTC] INFO: Signature requested: CBJCHBCAABAAIBYKLqbn7yVAKj8NAH-N3FHS_O6DPXyL
+[2025-05-20T19:47:56.655 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"6a484256-6c6c-4752-ae0b-655121a2c033"}
+[2025-05-20T19:48:06.767 UTC] INFO: POST /webhook
+[2025-05-20T19:48:06.768 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAIBYKLqbn7yVAKj8NAH-N3FHS_O6DPXyL
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:48:06.768Z
+[2025-05-20T19:48:08.221 UTC] INFO: POST /webhook
+[2025-05-20T19:48:08.222 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAIBYKLqbn7yVAKj8NAH-N3FHS_O6DPXyL
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T19:48:08.222Z
+[2025-05-20T19:50:22.340 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:50:22.341 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T19:50:28.475 UTC] INFO: Signature requested: CBJCHBCAABAAcCwdRzlGRgp5_cdSOMJ74sFUD2u3D9ei
+[2025-05-20T19:50:28.814 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"96df432a-4ebb-4e76-b8eb-3b999a11b2a8"}
+[2025-05-20T19:50:39.209 UTC] INFO: POST /webhook
+[2025-05-20T19:50:39.210 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAcCwdRzlGRgp5_cdSOMJ74sFUD2u3D9ei
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:50:39.210Z
+[2025-05-20T19:50:40.836 UTC] INFO: POST /webhook
+[2025-05-20T19:50:40.836 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAcCwdRzlGRgp5_cdSOMJ74sFUD2u3D9ei
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T19:50:40.836Z
+[2025-05-20T19:52:48.894 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:52:48.895 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T19:52:54.836 UTC] INFO: Signature requested: CBJCHBCAABAAObyTi6AHDIUsmfEFvRrNxLCLrmUg896w
+[2025-05-20T19:52:55.062 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"af7d4c12-8f96-4c19-99cb-081fe462f491"}
+[2025-05-20T19:53:05.710 UTC] INFO: POST /webhook
+[2025-05-20T19:53:05.710 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAObyTi6AHDIUsmfEFvRrNxLCLrmUg896w
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:53:05.710Z
+[2025-05-20T19:53:22.078 UTC] INFO: POST /webhook
+[2025-05-20T19:53:22.078 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAObyTi6AHDIUsmfEFvRrNxLCLrmUg896w
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T19:53:22.078Z
+[2025-05-20T19:55:21.698 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:55:21.698 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T19:55:27.887 UTC] INFO: Signature requested: CBJCHBCAABAAgDS-hlcNbmvht7uQhX1WnUOjZhk2cY-T
+[2025-05-20T19:55:28.391 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"507ab054-4ab8-4224-a9ab-67f05036b429"}
+[2025-05-20T19:55:37.649 UTC] INFO: POST /webhook
+[2025-05-20T19:55:37.650 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAgDS-hlcNbmvht7uQhX1WnUOjZhk2cY-T
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:55:37.650Z
+[2025-05-20T19:55:53.972 UTC] INFO: POST /webhook
+[2025-05-20T19:55:53.972 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAgDS-hlcNbmvht7uQhX1WnUOjZhk2cY-T
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T19:55:53.972Z
+[2025-05-20T19:57:10.480 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:57:10.481 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T19:57:16.514 UTC] INFO: Signature requested: CBJCHBCAABAAyI1fVTWzdHYKG5uyiwPlTqSydKjGgynn
+[2025-05-20T19:57:16.831 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"8970ad9b-d630-4bdf-8571-8ee1960a8752"}
+[2025-05-20T19:57:24.770 UTC] INFO: POST /webhook
+[2025-05-20T19:57:24.771 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAyI1fVTWzdHYKG5uyiwPlTqSydKjGgynn
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:57:24.771Z
+[2025-05-20T19:57:41.096 UTC] INFO: POST /webhook
+[2025-05-20T19:57:41.096 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAyI1fVTWzdHYKG5uyiwPlTqSydKjGgynn
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T19:57:41.096Z
+[2025-05-20T19:58:21.684 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T19:58:21.685 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T19:58:27.897 UTC] INFO: Signature requested: CBJCHBCAABAATv8MMtoyzpWnm31-F7wysnCK3Ys0stLF
+[2025-05-20T19:58:28.201 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"4fb4b243-c13d-4ddc-aa4e-27704c809a91"}
+[2025-05-20T19:58:38.348 UTC] INFO: POST /webhook
+[2025-05-20T19:58:38.349 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAATv8MMtoyzpWnm31-F7wysnCK3Ys0stLF
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T19:58:38.348Z
+[2025-05-20T19:58:39.594 UTC] INFO: POST /webhook
+[2025-05-20T19:58:39.594 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAATv8MMtoyzpWnm31-F7wysnCK3Ys0stLF
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T19:58:39.594Z
+[2025-05-20T20:00:39.044 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:00:39.045 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T20:00:45.352 UTC] INFO: Signature requested: CBJCHBCAABAAtt2tAjm_kkPRokwvqY7-ruZkf80K3OM6
+[2025-05-20T20:00:45.813 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"17de36fe-ef66-45cf-8298-a3b75ddf81f5"}
+[2025-05-20T20:00:49.933 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:00:49.933 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T20:00:54.556 UTC] INFO: POST /webhook
+[2025-05-20T20:00:54.557 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAtt2tAjm_kkPRokwvqY7-ruZkf80K3OM6
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:00:54.557Z
+[2025-05-20T20:00:55.797 UTC] INFO: Signature requested: CBJCHBCAABAAJy1nEIkbGWCtHKrFxzjOaD7bWMlq526h
+[2025-05-20T20:00:56.100 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"fbf79850-4890-40c9-bf95-82d2fc0c3c2a"}
+[2025-05-20T20:01:04.864 UTC] INFO: POST /webhook
+[2025-05-20T20:01:04.864 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAJy1nEIkbGWCtHKrFxzjOaD7bWMlq526h
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:01:04.864Z
+[2025-05-20T20:01:11.102 UTC] INFO: POST /webhook
+[2025-05-20T20:01:11.102 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAtt2tAjm_kkPRokwvqY7-ruZkf80K3OM6
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T20:01:11.102Z
+[2025-05-20T20:01:21.414 UTC] INFO: POST /webhook
+[2025-05-20T20:01:21.414 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAJy1nEIkbGWCtHKrFxzjOaD7bWMlq526h
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T20:01:21.414Z
+[2025-05-20T20:03:52.904 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:03:52.905 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T20:03:59.484 UTC] INFO: Signature requested: CBJCHBCAABAAnwjN1T1uQWmS1BvNyhACKDhrimEHFLZI
+[2025-05-20T20:04:00.069 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"e71d0263-1c9e-4643-9b3e-0e673d3672f5"}
+[2025-05-20T20:04:08.357 UTC] INFO: POST /webhook
+[2025-05-20T20:04:08.358 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAnwjN1T1uQWmS1BvNyhACKDhrimEHFLZI
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:04:08.358Z
+[2025-05-20T20:04:24.943 UTC] INFO: POST /webhook
+[2025-05-20T20:04:24.944 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAnwjN1T1uQWmS1BvNyhACKDhrimEHFLZI
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T20:04:24.944Z
+[2025-05-20T20:05:21.385 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedrobarone2709%40gmail.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:05:21.385 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedrobarone2709@gmail.com
+[2025-05-20T20:05:27.414 UTC] INFO: Signature requested: CBJCHBCAABAAKnPF-v2Pjlu6vhtww2QCpB829Nb5GFTK
+[2025-05-20T20:05:27.754 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"dcd968e4-7805-407e-a807-2acacd5850ed"}
+[2025-05-20T20:05:36.102 UTC] INFO: POST /webhook
+[2025-05-20T20:05:36.103 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAKnPF-v2Pjlu6vhtww2QCpB829Nb5GFTK
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:05:36.103Z
+[2025-05-20T20:05:37.380 UTC] INFO: POST /webhook
+[2025-05-20T20:05:37.380 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAKnPF-v2Pjlu6vhtww2QCpB829Nb5GFTK
+  → Participant: pedrobarone2709@gmail.com
+  → Date: 2025-05-20T20:05:37.380Z
+[2025-05-20T20:05:52.609 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:05:52.610 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T20:05:57.667 UTC] INFO: Signature requested: CBJCHBCAABAASrUeJ0VnZs179Xr1XlBXlfOVMo7oIrkv
+[2025-05-20T20:05:57.893 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"b7f80fe0-19c1-49d9-9716-58680a46f1f7"}
+[2025-05-20T20:06:06.885 UTC] INFO: POST /webhook
+[2025-05-20T20:06:06.886 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAASrUeJ0VnZs179Xr1XlBXlfOVMo7oIrkv
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:06:06.886Z
+[2025-05-20T20:11:13.360 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:11:13.361 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T20:11:18.740 UTC] INFO: Signature requested: CBJCHBCAABAAkZiD029wYg2StYfILUCVof4StWwZl7Zw
+[2025-05-20T20:11:18.968 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"244e6d84-eec6-4520-83e0-b12e4a53349d"}
+[2025-05-20T20:11:25.888 UTC] INFO: POST /webhook
+[2025-05-20T20:11:25.889 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAkZiD029wYg2StYfILUCVof4StWwZl7Zw
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:11:25.889Z
+[2025-05-20T20:13:12.557 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:13:12.558 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T20:13:18.540 UTC] INFO: Signature requested: CBJCHBCAABAA12EdTx3DILrchIvDK62BBvJ1iHA4KkSi
+[2025-05-20T20:13:18.768 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"7763cbed-2855-4fa3-8031-6b1e41325d2e"}
+[2025-05-20T20:13:26.754 UTC] INFO: POST /webhook
+[2025-05-20T20:13:26.755 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAA12EdTx3DILrchIvDK62BBvJ1iHA4KkSi
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:13:26.755Z
+[2025-05-20T20:32:19.428 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:32:19.429 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T20:32:25.484 UTC] INFO: Signature requested: CBJCHBCAABAAHjVjL4GShGsbD2Elui3SZDjp2wu-Rd00
+[2025-05-20T20:32:25.709 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"abf4ff37-ff53-4ff0-9d23-6b00bde61f91"}
+[2025-05-20T20:32:34.217 UTC] INFO: POST /webhook
+[2025-05-20T20:32:34.218 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAHjVjL4GShGsbD2Elui3SZDjp2wu-Rd00
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:32:34.218Z
+[2025-05-20T20:41:05.020 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:41:05.021 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T20:41:10.264 UTC] INFO: Signature requested: CBJCHBCAABAAYKaBex1B9L8Ef8CkViFooxWq0ov6amIt
+[2025-05-20T20:41:10.495 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"eb5ee191-5629-40ee-a9b5-1a325b834ec3"}
+[2025-05-20T20:41:18.792 UTC] INFO: POST /webhook
+[2025-05-20T20:41:18.793 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAYKaBex1B9L8Ef8CkViFooxWq0ov6amIt
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:41:18.793Z
+[2025-05-20T20:41:52.132 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedro.carneiro%40stratesys-ts.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:41:52.133 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedro.carneiro@stratesys-ts.com
+[2025-05-20T20:41:59.558 UTC] INFO: Signature requested: CBJCHBCAABAA2ltf6vTzPoA1ddPko4VuH4lhajShIiuK
+[2025-05-20T20:41:59.891 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"4d05a3f9-93a0-47c6-b7c6-55c176937213"}
+[2025-05-20T20:42:07.976 UTC] INFO: POST /webhook
+[2025-05-20T20:42:07.976 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAA2ltf6vTzPoA1ddPko4VuH4lhajShIiuK
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:42:07.976Z
+[2025-05-20T20:42:24.585 UTC] INFO: POST /webhook
+[2025-05-20T20:42:24.585 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAA2ltf6vTzPoA1ddPko4VuH4lhajShIiuK
+  → Participant: pedro.carneiro@stratesys-ts.com
+  → Date: 2025-05-20T20:42:24.585Z
+[2025-05-20T20:46:29.655 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedro.carneiro%40stratesys-ts.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:46:29.656 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedro.carneiro@stratesys-ts.com
+[2025-05-20T20:46:37.123 UTC] INFO: Signature requested: CBJCHBCAABAAeDSryv28E2R9NXTNgAB7_69blvSDNpHj
+[2025-05-20T20:46:37.584 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"a9252c84-0f49-4f17-8c7d-d14b37f5feaf"}
+[2025-05-20T20:46:48.390 UTC] INFO: POST /webhook
+[2025-05-20T20:46:48.390 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAeDSryv28E2R9NXTNgAB7_69blvSDNpHj
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:46:48.390Z
+[2025-05-20T20:47:04.780 UTC] INFO: POST /webhook
+[2025-05-20T20:47:04.780 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAeDSryv28E2R9NXTNgAB7_69blvSDNpHj
+  → Participant: pedro.carneiro@stratesys-ts.com
+  → Date: 2025-05-20T20:47:04.780Z
+[2025-05-20T20:51:58.802 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedro.carneiro%40stratesys-ts.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:51:58.803 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedro.carneiro@stratesys-ts.com
+[2025-05-20T20:52:05.585 UTC] INFO: Signature requested: CBJCHBCAABAAM6KgxyP6jbpLljnB_z5rjJCPKrEkOqiQ
+[2025-05-20T20:52:05.808 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"ce4f0913-aeb0-4073-a484-67d529dc337d"}
+[2025-05-20T20:52:15.379 UTC] INFO: POST /webhook
+[2025-05-20T20:52:15.380 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAM6KgxyP6jbpLljnB_z5rjJCPKrEkOqiQ
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:52:15.380Z
+[2025-05-20T20:52:16.632 UTC] INFO: POST /webhook
+[2025-05-20T20:52:16.632 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAM6KgxyP6jbpLljnB_z5rjJCPKrEkOqiQ
+  → Participant: pedro.carneiro@stratesys-ts.com
+  → Date: 2025-05-20T20:52:16.632Z
+[2025-05-20T20:54:37.729 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedro.carneiro%40stratesys-ts.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:54:37.730 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedro.carneiro@stratesys-ts.com
+[2025-05-20T20:54:44.003 UTC] INFO: Signature requested: CBJCHBCAABAAbfSFHK-XqE8tZTh1Er0VeR0myLKSRLJX
+[2025-05-20T20:54:44.903 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"f5be3c8a-c9ca-4c3c-8abf-7b86b5c05c3a"}
+[2025-05-20T20:54:54.002 UTC] INFO: POST /webhook
+[2025-05-20T20:54:54.003 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAbfSFHK-XqE8tZTh1Er0VeR0myLKSRLJX
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:54:54.003Z
+[2025-05-20T20:54:55.267 UTC] INFO: POST /webhook
+[2025-05-20T20:54:55.267 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAbfSFHK-XqE8tZTh1Er0VeR0myLKSRLJX
+  → Participant: pedro.carneiro@stratesys-ts.com
+  → Date: 2025-05-20T20:54:55.267Z
+[2025-05-20T20:54:56.969 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=pedro.carneiro%40stratesys-ts.com&nodeId=678038&attachId=678037&docName=teste.pdf&workflowId=678041&subworkflowId=678041&taskId=2
+[2025-05-20T20:54:56.970 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678038
+  → Target Folder ID: 678037
+  → Recipients: augusto.barone@outlook.com, pedro.carneiro@stratesys-ts.com
+[2025-05-20T20:55:03.251 UTC] INFO: Signature requested: CBJCHBCAABAAS0mFL_yyrwdgn1Jk2g_XPaYMbsbNFjlb
+[2025-05-20T20:55:03.556 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"6ad92bc6-bc0b-4d27-b081-2024de340e38"}
+[2025-05-20T20:55:11.394 UTC] INFO: POST /webhook
+[2025-05-20T20:55:11.394 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAS0mFL_yyrwdgn1Jk2g_XPaYMbsbNFjlb
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:55:11.394Z
+[2025-05-20T20:55:27.908 UTC] INFO: POST /webhook
+[2025-05-20T20:55:27.908 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAS0mFL_yyrwdgn1Jk2g_XPaYMbsbNFjlb
+  → Participant: pedro.carneiro@stratesys-ts.com
+  → Date: 2025-05-20T20:55:27.908Z
+[2025-05-20T20:56:39.080 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-20T20:57:26.856 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678323&attachId=678322&docName=teste.pdf&workflowId=678326&subworkflowId=678326&taskId=2
+[2025-05-20T20:57:26.857 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678323
+  → Target Folder ID: 678322
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T20:57:32.517 UTC] INFO: Signature requested: CBJCHBCAABAAYVhEWra50AVrlThP4J2zkgOHvDF82qBr
+[2025-05-20T20:57:32.756 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"Insufficient permissions to edit this step.","request_id":"2d1e1677-20f1-48e1-9eb8-a6f113bd71a0"}
+[2025-05-20T20:57:41.341 UTC] INFO: POST /webhook
+[2025-05-20T20:57:41.342 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAYVhEWra50AVrlThP4J2zkgOHvDF82qBr
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:57:41.342Z
+[2025-05-20T20:58:25.188 UTC] INFO: POST /webhook
+[2025-05-20T20:58:25.189 UTC] INFO: Webhook received
+  → Event: AGREEMENT_EMAIL_VIEWED
+  → Agreement ID: CBJCHBCAABAAYVhEWra50AVrlThP4J2zkgOHvDF82qBr
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T20:58:25.189Z
+[2025-05-20T21:00:10.957 UTC] INFO: POST /webhook
+[2025-05-20T21:00:10.958 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_COMPLETED
+  → Agreement ID: CBJCHBCAABAAYVhEWra50AVrlThP4J2zkgOHvDF82qBr
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T21:00:10.958Z
+[2025-05-20T21:00:13.868 UTC] INFO: PDF Overwritten: C:\Users\augus\Desktop\adobe api - backend only\server\inprocess\teste.pdf
+[2025-05-20T21:00:16.463 UTC] INFO: Sent to folder 678322 on Content Server
+[2025-05-20T21:00:19.518 UTC] INFO: POST /webhook
+[2025-05-20T21:00:19.519 UTC] INFO: Webhook received
+  → Event: AGREEMENT_WORKFLOW_COMPLETED
+  → Agreement ID: CBJCHBCAABAAYVhEWra50AVrlThP4J2zkgOHvDF82qBr
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T21:00:19.519Z
+[2025-05-20T21:00:27.229 UTC] INFO: PDF Overwritten: C:\Users\augus\Desktop\adobe api - backend only\server\inprocess\teste.pdf
+[2025-05-20T21:00:29.427 UTC] INFO: Sent to folder 678322 on Content Server
+[2025-05-20T21:00:29.664 UTC] ERROR: SendOn task 3 failed: Request failed with status code 400
+[2025-05-20T21:02:49.150 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678323&attachId=678322&docName=teste.pdf&workflowId=678326&subworkflowId=678326&taskId=2
+[2025-05-20T21:02:49.150 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678323
+  → Target Folder ID: 678322
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T21:02:54.769 UTC] INFO: Signature requested: CBJCHBCAABAAx7Kaw6SStno-LjMC0LMLXJszTGiZLNE6
+[2025-05-20T21:02:55.384 UTC] INFO: SendOn automático realizado para workflow 678326
+[2025-05-20T21:03:02.786 UTC] INFO: POST /webhook
+[2025-05-20T21:03:02.786 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAx7Kaw6SStno-LjMC0LMLXJszTGiZLNE6
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T21:03:02.786Z
+[2025-05-20T21:03:15.086 UTC] INFO: POST /webhook
+[2025-05-20T21:03:15.087 UTC] INFO: Webhook received
+  → Event: AGREEMENT_EMAIL_VIEWED
+  → Agreement ID: CBJCHBCAABAAx7Kaw6SStno-LjMC0LMLXJszTGiZLNE6
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T21:03:15.087Z
+[2025-05-20T21:03:33.820 UTC] INFO: POST /webhook
+[2025-05-20T21:03:33.821 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_COMPLETED
+  → Agreement ID: CBJCHBCAABAAx7Kaw6SStno-LjMC0LMLXJszTGiZLNE6
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T21:03:33.821Z
+[2025-05-20T21:03:41.522 UTC] INFO: PDF Overwritten: C:\Users\augus\Desktop\adobe api - backend only\server\inprocess\teste.pdf
+[2025-05-20T21:03:45.165 UTC] INFO: Sent to folder 678322 on Content Server
+[2025-05-20T21:03:48.294 UTC] INFO: POST /webhook
+[2025-05-20T21:03:48.294 UTC] INFO: Webhook received
+  → Event: AGREEMENT_WORKFLOW_COMPLETED
+  → Agreement ID: CBJCHBCAABAAx7Kaw6SStno-LjMC0LMLXJszTGiZLNE6
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T21:03:48.294Z
+[2025-05-20T21:03:51.277 UTC] INFO: PDF Overwritten: C:\Users\augus\Desktop\adobe api - backend only\server\inprocess\teste.pdf
+[2025-05-20T21:03:53.734 UTC] INFO: Sent to folder 678322 on Content Server
+[2025-05-20T21:03:54.499 UTC] INFO: SendOn task 3 (Firmado) done for workflow 678326
+[2025-05-20T21:11:23.703 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678323&attachId=678322&docName=teste.pdf&workflowId=678326&subworkflowId=678326&taskId=2
+[2025-05-20T21:11:23.703 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678323
+  → Target Folder ID: 678322
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T21:11:28.985 UTC] INFO: Signature requested: CBJCHBCAABAAwY1bXlEfkMjvayMmjEpz7_sRzWPUyi2u
+[2025-05-20T21:11:29.215 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"9c631a47-c217-4791-a2cc-fe3ae5ef2a23"}
+[2025-05-20T21:11:36.476 UTC] INFO: POST /webhook
+[2025-05-20T21:11:36.476 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAwY1bXlEfkMjvayMmjEpz7_sRzWPUyi2u
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T21:11:36.476Z
+[2025-05-20T21:16:43.237 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678323&attachId=678322&docName=teste.pdf&workflowId=678326&subworkflowId=678326&taskId=2
+[2025-05-20T21:16:43.238 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678323
+  → Target Folder ID: 678322
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T21:16:49.408 UTC] INFO: Signature requested: CBJCHBCAABAAnWn_rR9IfsVELlYnqPZGu8YeV2cASN2D
+[2025-05-20T21:16:49.679 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"0e87a1f7-1aaa-45af-8350-26530f0eb61e"}
+[2025-05-20T21:16:59.082 UTC] INFO: POST /webhook
+[2025-05-20T21:16:59.082 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAnWn_rR9IfsVELlYnqPZGu8YeV2cASN2D
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T21:16:59.082Z
+[2025-05-20T21:18:46.118 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678323&attachId=678322&docName=teste.pdf&workflowId=678326&subworkflowId=678326&taskId=2
+[2025-05-20T21:18:46.118 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 678323
+  → Target Folder ID: 678322
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T21:18:53.965 UTC] INFO: Signature requested: CBJCHBCAABAAIDAQGfqymPBlMLDBHgPKxFYpzrUVoYw3
+[2025-05-20T21:18:54.188 UTC] ERROR: Falha no SendOn automático: Request failed with status code 400 | OTCS: {"error":"This task has already been completed or moved along.","request_id":"2bba1db9-f30d-40d0-8db9-35c37b29b731"}
+[2025-05-20T21:19:02.772 UTC] INFO: POST /webhook
+[2025-05-20T21:19:02.773 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAIDAQGfqymPBlMLDBHgPKxFYpzrUVoYw3
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-20T21:19:02.773Z
+[2025-05-20T21:31:29.270 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-20T21:31:32.561 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=678125&attachId=678124&docName=fbr-manual-proprietario-ka-hatch.pdf&workflowId=678128&subworkflowId=678128&taskId=2
+[2025-05-20T21:31:32.562 UTC] INFO: Signature request initiated
+  → Document: fbr-manual-proprietario-ka-hatch.pdf
+  → Node ID: 678125
+  → Target Folder ID: 678124
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-20T21:31:40.094 UTC] INFO: Signature requested: CBJCHBCAABAAuUlASYDo9cVUNplAzBIT5mtUDs68df9Y
+[2025-05-20T21:31:40.765 UTC] INFO: SendOn automático realizado para workflow 678128
+[2025-05-20T21:31:48.500 UTC] INFO: POST /webhook
+[2025-05-20T21:31:48.501 UTC] INFO: Webhook received
+  → Event: AGREEMENT_AUTO_CANCELLED_CONVERSION_PROBLEM
+  → Agreement ID: CBJCHBCAABAAuUlASYDo9cVUNplAzBIT5mtUDs68df9Y
+  → Participant: pedrofilmes2709@gmail.com
+  → Date: 2025-05-20T21:31:48.501Z
+[2025-05-21T02:09:14.209 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-21T17:28:59.886 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-21T17:29:30.160 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=685529&attachId=685528&docName=teste.pdf&workflowId=685532&subworkflowId=685532&taskId=2
+[2025-05-21T17:29:30.161 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 685529
+  → Target Folder ID: 685528
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-21T17:30:04.113 UTC] INFO: GET /favicon.ico
+[2025-05-21T17:31:06.142 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-21T17:31:16.522 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=685529&attachId=685528&docName=teste.pdf&workflowId=685532&subworkflowId=685532&taskId=2
+[2025-05-21T17:31:16.523 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 685529
+  → Target Folder ID: 685528
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-21T17:32:55.421 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-21T17:40:11.765 UTC] INFO: GET /start?userEmail1=augusto.barone%40outlook.com&userEmail2=%3F&nodeId=685529&attachId=685528&docName=teste.pdf&workflowId=685532&subworkflowId=685532&taskId=2
+[2025-05-21T17:40:11.765 UTC] INFO: Signature request initiated
+  → Document: teste.pdf
+  → Node ID: 685529
+  → Target Folder ID: 685528
+  → Recipients: augusto.barone@outlook.com, ?
+[2025-05-21T17:40:21.015 UTC] INFO: Signature requested: CBJCHBCAABAAHdaDinvcO2YQnN_OJVd-aztRmmmRy50O
+[2025-05-21T17:40:21.608 UTC] INFO: SendOn automático realizado para workflow 685532
+[2025-05-21T17:40:29.628 UTC] INFO: POST /webhook
+[2025-05-21T17:40:29.628 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_REQUESTED
+  → Agreement ID: CBJCHBCAABAAHdaDinvcO2YQnN_OJVd-aztRmmmRy50O
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-21T17:40:29.628Z
+[2025-05-21T17:45:42.848 UTC] INFO: POST /webhook
+[2025-05-21T17:45:42.849 UTC] INFO: Webhook received
+  → Event: AGREEMENT_EMAIL_VIEWED
+  → Agreement ID: CBJCHBCAABAAHdaDinvcO2YQnN_OJVd-aztRmmmRy50O
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-21T17:45:42.849Z
+[2025-05-21T17:46:03.110 UTC] INFO: POST /webhook
+[2025-05-21T17:46:03.110 UTC] INFO: Webhook received
+  → Event: AGREEMENT_ACTION_COMPLETED
+  → Agreement ID: CBJCHBCAABAAHdaDinvcO2YQnN_OJVd-aztRmmmRy50O
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-21T17:46:03.110Z
+[2025-05-21T17:46:05.921 UTC] INFO: PDF Overwritten: c:\Users\augus\Desktop\adobe api - backend only\server\inprocess\teste.pdf
+[2025-05-21T17:46:08.101 UTC] INFO: Sent to folder 685528 on Content Server
+[2025-05-21T17:46:11.363 UTC] INFO: POST /webhook
+[2025-05-21T17:46:11.363 UTC] INFO: Webhook received
+  → Event: AGREEMENT_WORKFLOW_COMPLETED
+  → Agreement ID: CBJCHBCAABAAHdaDinvcO2YQnN_OJVd-aztRmmmRy50O
+  → Participant: augusto.barone@outlook.com
+  → Date: 2025-05-21T17:46:11.363Z
+[2025-05-21T17:46:14.081 UTC] INFO: PDF Overwritten: c:\Users\augus\Desktop\adobe api - backend only\server\inprocess\teste.pdf
+[2025-05-21T17:46:17.333 UTC] INFO: Sent to folder 685528 on Content Server
+[2025-05-21T17:46:18.659 UTC] INFO: SendOn task 3 (Firmado) done for workflow 685532
+[2025-05-21T18:38:11.637 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
+[2025-05-21T22:36:09.681 UTC] INFO: Server started successfully
+  → Local:  http://localhost:3000
+  → Ngrok:  https://legible-chipmunk-only.ngrok-free.app
+
+
