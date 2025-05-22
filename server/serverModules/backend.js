@@ -79,8 +79,9 @@ const INP_ROOT = process.env.NODE_ENV === "production"
 if (!fs.existsSync(INP_ROOT)) fs.mkdirSync(INP_ROOT, { recursive: true });
 
 const MAP_FILE = process.env.NODE_ENV === "production"
-  ? "/tmp/agreements.json"
+  ? "/data/agreements.json"
   : path.join(__dirname, 'agreements.json');
+
 let MAP = fs.existsSync(MAP_FILE) ? JSON.parse(fs.readFileSync(MAP_FILE,'utf8')) : {};
 function saveMap(){ fs.writeFileSync(MAP_FILE, JSON.stringify(MAP, null, 2)); }
 
@@ -215,6 +216,10 @@ async function triggerDisposition(agreementId, disposition){
   }
 }
 
+
+logger.info('Evento recebido:', JSON.stringify(payload, null, 2));
+
+
 /// --- HANDSHAKE HEAD ---
 app.head('/webhook', (req, res) => {
   res.setHeader('X-AdobeSign-ClientId', CLIENT_ID);
@@ -267,14 +272,16 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
   );
 
   const logPath = process.env.NODE_ENV === "production"
-    ? '/tmp/webhook_raw.log'
+    ? '/data/webhook_raw.log'
     : path.join(__dirname, '../logs/webhook_raw.log');
+
   fs.appendFileSync(
     logPath,
     JSON.stringify(payload, null, 2) + '\n\n'
   );
 
   //if (!agreementId || !MAP[agreementId]) return res.status(200).send('OK');
+  
   const info = MAP[agreementId];
 
   const PDF_EVENTS = [
