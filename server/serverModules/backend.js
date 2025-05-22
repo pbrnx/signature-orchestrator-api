@@ -8,14 +8,31 @@ const fs       = require('fs');
 const path     = require('path');
 require('dotenv').config();
 
-//modules
 const logger = require('../serverModules/logger');
 const { setToken, ensureToken } = require('./tokenManager');
 const { downloadNode, uploadToFolder, sendOnWorkflow } = require('./otcsManager');
 
-//app variables
 const app  = express();
 const PORT = process.env.PORT || 3000;
+
+/* === Diretórios === */
+if (process.env.NODE_ENV === "production" && !fs.existsSync('/data')) {
+  fs.mkdirSync('/data', { recursive: true });
+}
+
+const INP_ROOT = process.env.NODE_ENV === "production"
+  ? "/tmp/inprocess"
+  : path.join(__dirname, '../inprocess');
+if (!fs.existsSync(INP_ROOT)) fs.mkdirSync(INP_ROOT, { recursive: true });
+
+const MAP_FILE = process.env.NODE_ENV === "production"
+  ? "/data/agreements.json"
+  : path.join(__dirname, 'agreements.json');
+let MAP = fs.existsSync(MAP_FILE) ? JSON.parse(fs.readFileSync(MAP_FILE, 'utf8')) : {};
+function saveMap() { fs.writeFileSync(MAP_FILE, JSON.stringify(MAP, null, 2)); }
+
+
+
 
 
 /* === Adobe Sign Credentials=== */
@@ -25,6 +42,8 @@ const NGROK_HOST = 'https://adobe-api-deploy.onrender.com';
 const REDIRECT_URI  = `${NGROK_HOST}/admin/callback`;
 const API_BASE      = 'https://api.na4.adobesign.com';
 const AUTH_BASE     = 'https://secure.na4.adobesign.com';
+
+
 
 //admin route (scopes)
 app.get('/admin/login', (_, res) => {
@@ -71,19 +90,6 @@ app.get('/admin/callback', async (req, res) => {
 });
 
 app.get('/health', (_, res) => res.status(200).json({ status: 'ok' }));
-
-/* === Pastas & Mapas === */
-const INP_ROOT = process.env.NODE_ENV === "production"
-  ? "/tmp/inprocess"
-  : path.join(__dirname, '../inprocess');
-if (!fs.existsSync(INP_ROOT)) fs.mkdirSync(INP_ROOT, { recursive: true });
-
-const MAP_FILE = process.env.NODE_ENV === "production"
-  ? "/data/agreements.json"
-  : path.join(__dirname, 'agreements.json');
-
-let MAP = fs.existsSync(MAP_FILE) ? JSON.parse(fs.readFileSync(MAP_FILE,'utf8')) : {};
-function saveMap(){ fs.writeFileSync(MAP_FILE, JSON.stringify(MAP, null, 2)); }
 
 
 /* === Middlewares globais === */
