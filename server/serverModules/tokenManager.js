@@ -7,8 +7,10 @@ const API_BASE = 'https://api.na4.adobesign.com';
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
-
-const TOKENS_FILE = path.resolve(__dirname, '../../tokens.json');
+// Salva em /tmp/tokens.json no Render/produção, localmente como antes
+const TOKENS_FILE = process.env.NODE_ENV === 'production'
+  ? '/tmp/tokens.json'
+  : path.resolve(__dirname, '../../tokens.json');
 //console.log('[DEBUG] Token file path:', TOKENS_FILE);
 
 let tok = { access_token: '', refresh_token: '', expires_at: 0 };
@@ -18,7 +20,7 @@ function load() {
     try {
       const content = fs.readFileSync(TOKENS_FILE, 'utf8');
       tok = JSON.parse(content);
-    //  console.log('[DEBUG] TOKEN LOADED:', tok);
+      //  console.log('[DEBUG] TOKEN LOADED:', tok);
     } catch (err) {
       console.error('[ERROR] Failed to read tokens.json:', err.message);
     }
@@ -41,10 +43,10 @@ function setToken(acTok, expSec, refTok) {
 
 async function ensureToken() {
   const now = Date.now();
- // console.log('[DEBUG] Checking token expiration:', tok.expires_at, now);
+  // console.log('[DEBUG] Checking token expiration:', tok.expires_at, now);
 
   if (tok.access_token && now < tok.expires_at - 30000) {
-   // console.log('[DEBUG] Using existing access token');
+    // console.log('[DEBUG] Using existing access token');
     return tok.access_token;
   }
 
@@ -54,7 +56,7 @@ async function ensureToken() {
   }
 
   try {
-   // console.log('[DEBUG] Attempting token refresh...');
+    // console.log('[DEBUG] Attempting token refresh...');
     const rsp = await axios.post(`${API_BASE}/oauth/v2/refresh`,
       new URLSearchParams({
         grant_type: 'refresh_token',
@@ -65,7 +67,7 @@ async function ensureToken() {
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
     setToken(rsp.data.access_token, rsp.data.expires_in, rsp.data.refresh_token);
-   // console.log('[DEBUG] Token refreshed');
+    // console.log('[DEBUG] Token refreshed');
     return tok.access_token;
   } catch (err) {
     console.error('[ERROR] Refresh failed:', err.response?.data || err.message);

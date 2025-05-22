@@ -15,12 +15,13 @@ const { downloadNode, uploadToFolder, sendOnWorkflow } = require('./otcsManager'
 
 //app variables
 const app  = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 
 /* === Adobe Sign Credentials=== */
 const CLIENT_ID     = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const NGROK_HOST= "https://legible-chipmunk-only.ngrok-free.app";
+const NGROK_HOST = process.env.PUBLIC_URL || `http://localhost:${PORT}`;
 const REDIRECT_URI  = `${NGROK_HOST}/admin/callback`;
 const API_BASE      = 'https://api.na4.adobesign.com';
 const AUTH_BASE     = 'https://secure.na4.adobesign.com';
@@ -72,12 +73,17 @@ app.get('/admin/callback', async (req, res) => {
 app.get('/health', (_, res) => res.status(200).json({ status: 'ok' }));
 
 /* === Pastas & Mapas === */
-const INP_ROOT = path.join(__dirname, '../inprocess');
+const INP_ROOT = process.env.NODE_ENV === "production"
+  ? "/tmp/inprocess"
+  : path.join(__dirname, '../inprocess');
 if (!fs.existsSync(INP_ROOT)) fs.mkdirSync(INP_ROOT, { recursive: true });
 
-const MAP_FILE = path.join(__dirname, 'agreements.json');
+const MAP_FILE = process.env.NODE_ENV === "production"
+  ? "/tmp/agreements.json"
+  : path.join(__dirname, 'agreements.json');
 let MAP = fs.existsSync(MAP_FILE) ? JSON.parse(fs.readFileSync(MAP_FILE,'utf8')) : {};
 function saveMap(){ fs.writeFileSync(MAP_FILE, JSON.stringify(MAP, null, 2)); }
+
 
 /* === Middlewares globais === */
 app.use(cors());
@@ -237,8 +243,11 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
   );
 
   // Salva payload bruto (opcional)
+  const logPath = process.env.NODE_ENV === "production"
+    ? '/tmp/webhook_raw.log'
+    : path.join(__dirname, '../logs/webhook_raw.log');
   fs.appendFileSync(
-    path.join(__dirname, '../logs/webhook_raw.log'),
+    logPath,
     JSON.stringify(payload, null, 2) + '\n\n'
   );
 
