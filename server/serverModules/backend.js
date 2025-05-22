@@ -89,7 +89,6 @@ function saveMap(){ fs.writeFileSync(MAP_FILE, JSON.stringify(MAP, null, 2)); }
 app.use(cors());
 app.use(express.json({ limit:'10mb' }));
 app.use(express.urlencoded({ extended:true }));
-app.use((_,res,next)=>{res.setHeader('ngrok-skip-browser-warning','true'); next();});
 let lastRouteGroup = null;
 
 app.use((req, _, next) => {
