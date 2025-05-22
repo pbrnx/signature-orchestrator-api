@@ -248,7 +248,10 @@ app.get('/webhook', (req, res) => {
 
 // --- HANDSHAKE POST + LÓGICA DO SEU WEBHOOK ---
 app.post('/webhook', express.json({limit:'100mb'}), async (req, res) => {
-  res.setHeader('X-AdobeSign-ClientId', CLIENT_ID);
+  const cid = req.headers['x-adobesign-clientid'] ||
+  req.headers['x-adobesign-client-id'] ||
+  CLIENT_ID;
+ res.setHeader('X-AdobeSign-ClientId', cid);
 
   // Parse seguro do corpo
   let payload = {};
