@@ -224,16 +224,19 @@ app.head('/webhook', (req, res) => {
 
 // --- HANDSHAKE GET ---
 app.get('/webhook', (req, res) => {
+  const cid = req.headers['x-adobesign-clientid'] || CLIENT_ID;
+
   if (req.query.challenge) {
-    // devolve o challenge puro em texto
-    res.setHeader('X-AdobeSign-ClientId', CLIENT_ID);
+    res.setHeader('X-AdobeSign-ClientId', cid);
     res.setHeader('Content-Type', 'text/plain');
-    return res.status(200).send(req.query.challenge);
+    return res.status(200).send(`${req.query.challenge}`);
   }
-  // ping manual
+
+  res.setHeader('X-AdobeSign-ClientId', cid);
   res.setHeader('Content-Type', 'application/json');
-  res.status(200).send('pong');
+  return res.status(200).json({ status: 'pong' });
 });
+
 
 // --- HANDSHAKE POST + LÓGICA DO SEU WEBHOOK ---
 app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
