@@ -215,22 +215,22 @@ async function triggerDisposition(agreementId, disposition){
   }
 }
 
-// --- HANDSHAKE HEAD (necessário para Adobe validar o webhook) ---
+/// --- HANDSHAKE HEAD ---
 app.head('/webhook', (req, res) => {
   res.setHeader('X-AdobeSign-ClientId', CLIENT_ID);
   res.setHeader('Content-Type', 'application/json');
-  res.status(200).end();
+  res.status(200).end();          // sem body
 });
 
-// --- HANDSHAKE GET (necessário para Adobe validar o webhook) ---
+// --- HANDSHAKE GET ---
 app.get('/webhook', (req, res) => {
   if (req.query.challenge) {
-    // A Adobe espera receber de volta o valor de challenge em texto puro
+    // devolve o challenge puro em texto
     res.setHeader('X-AdobeSign-ClientId', CLIENT_ID);
     res.setHeader('Content-Type', 'text/plain');
     return res.status(200).send(req.query.challenge);
   }
-  // Se acessar sem challenge, devolve pong para teste manual
+  // ping manual
   res.setHeader('Content-Type', 'application/json');
   res.status(200).send('pong');
 });
