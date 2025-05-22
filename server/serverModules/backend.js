@@ -262,10 +262,11 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
     return res.status(400).send('Invalid webhook payload');
 
   }
-  // Adicione aqui!
-  logger.info('Evento recebido:', JSON.stringify(payload, null, 2));
+  //Logging webhook
+  const short = JSON.stringify(payload).slice(0, 4000); // 4 KB cap
+ logger.info(`Webhook raw (trunc): ${short}${payload.length > 4000 ? '…' : ''}`);
 
-  // Daqui pra baixo é igual ao seu código! (processa os eventos normalmente)
+  
   // --- Seu código de eventos do webhook aqui ---
   const agreementId = payload.event?.agreementId || payload.agreement?.id || payload.agreementId;
   const evt = payload.event?.eventType || payload.event || payload.type || 'UNKNOWN_EVENT';
@@ -316,9 +317,13 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
 
 
 
-async function overwritePdf(agreementId, tries=0){
+const { pipeline } = require('stream');
+const { promisify } = require('util');
+const streamPipeline = promisify(pipeline);
+
+async function overwritePdf(agreementId, tries = 0) {
   const info = MAP[agreementId];
-  if(!info) return;
+  if (!info) return;
 
   const token = await ensureToken();
   const { nodeId, attachId, fileName } = info;
@@ -328,21 +333,28 @@ async function overwritePdf(agreementId, tries=0){
   try {
     const rsp = await axios.get(
       `${API_BASE}/api/rest/v6/agreements/${agreementId}/combinedDocument`,
-      { responseType:'arraybuffer', headers:{ Authorization:`Bearer ${token}` } }
+      {
+        responseType: 'stream',
+        headers: { Authorization: `Bearer ${token}` },
+        maxContentLength: 20 * 1024 * 1024 // 20 MB limit
+      }
     );
-    fs.writeFileSync(filePath, rsp.data);
+
+    await streamPipeline(rsp.data, fs.createWriteStream(filePath));
     logger.info(`PDF Overwritten: ${filePath}`);
 
-    await uploadToFolder(attachId, rsp.data, name);
+    const fileBuffer = fs.readFileSync(filePath); // optional: avoid if `uploadToFolder` supports streams
+    await uploadToFolder(attachId, fileBuffer, name);
     logger.info(`Sent to folder ${attachId} on Content Server`);
-  } catch(e) {
-    if(e.response?.status === 403 && tries < 50){
+  } catch (e) {
+    if (e.response?.status === 403 && tries < 50) {
       setTimeout(() => overwritePdf(agreementId, tries + 1), 3000);
     } else {
       logger.error(`Upload failed: ${e.message}`);
     }
   }
 }
+
 
 app.use((_,res) => res.status(404).json({error:'Endpoint not found'}));
 
