@@ -274,7 +274,7 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
     JSON.stringify(payload, null, 2) + '\n\n'
   );
 
-  if (!agreementId || !MAP[agreementId]) return res.status(200).send('OK');
+  //if (!agreementId || !MAP[agreementId]) return res.status(200).send('OK');
   const info = MAP[agreementId];
 
   const PDF_EVENTS = [
