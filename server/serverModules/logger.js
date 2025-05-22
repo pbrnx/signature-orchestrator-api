@@ -34,15 +34,14 @@ const logger = createLogger({
       filename: auditLogPath,
       level: 'info',
       format: format.combine(format.timestamp(), logFormat)
+    }),
+    // Sempre adiciona log no console, inclusive em produção/cloud!
+    new transports.Console({
+      format: format.combine(format.colorize(), logFormat)
     })
   ]
 });
 
-// Também loga no console em dev
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new transports.Console({
-    format: format.combine(format.colorize(), format.simple())
-  }));
-}
-
 module.exports = logger;
+
+
