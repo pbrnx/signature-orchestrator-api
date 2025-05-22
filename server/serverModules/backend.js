@@ -217,9 +217,6 @@ async function triggerDisposition(agreementId, disposition){
 }
 
 
-logger.info('Evento recebido:', JSON.stringify(payload, null, 2));
-
-
 /// --- HANDSHAKE HEAD ---
 app.head('/webhook', (req, res) => {
   res.setHeader('X-AdobeSign-ClientId', CLIENT_ID);
@@ -254,7 +251,10 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
   } catch (err) {
     logger.error(`Webhook parse error: ${err.message}`);
     return res.status(400).send('Invalid webhook payload');
+
   }
+  // Adicione aqui!
+  logger.info('Evento recebido:', JSON.stringify(payload, null, 2));
 
   // Daqui pra baixo é igual ao seu código! (processa os eventos normalmente)
   // --- Seu código de eventos do webhook aqui ---
