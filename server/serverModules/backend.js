@@ -16,8 +16,8 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 
 /* === Diretórios === */
-if (process.env.NODE_ENV === "production" && !fs.existsSync('/data')) {
-  fs.mkdirSync('/data', { recursive: true });
+if (process.env.NODE_ENV === "production" && !fs.existsSync('/tmp')) {
+  fs.mkdirSync('/tmp', { recursive: true });
 }
 
 const INP_ROOT = process.env.NODE_ENV === "production"
@@ -26,7 +26,7 @@ const INP_ROOT = process.env.NODE_ENV === "production"
 if (!fs.existsSync(INP_ROOT)) fs.mkdirSync(INP_ROOT, { recursive: true });
 
 const MAP_FILE = process.env.NODE_ENV === "production"
-  ? "/data/agreements.json"
+  ? "/tmp/agreements.json"
   : path.join(__dirname, 'agreements.json');
 let MAP = fs.existsSync(MAP_FILE) ? JSON.parse(fs.readFileSync(MAP_FILE, 'utf8')) : {};
 function saveMap() { fs.writeFileSync(MAP_FILE, JSON.stringify(MAP, null, 2)); }
@@ -278,7 +278,7 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
   );
 
   const logPath = process.env.NODE_ENV === "production"
-    ? '/data/webhook_raw.log'
+    ? '/tmp/webhook_raw.log'
     : path.join(__dirname, '../logs/webhook_raw.log');
 
   fs.appendFileSync(
