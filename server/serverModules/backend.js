@@ -132,6 +132,21 @@ app.get('/start', async (req, res) => {
   if (!emails.length || !nodeId) return res.status(400).json({ error: 'Node ID and Email are mandatory.' });
   if (!attachId || isNaN(+attachId)) return res.status(400).json({ error: 'attachId is mandatory.' });
 
+  const now = Date.now();
+  const threshold = 15 * 60 * 1000; // 15 minutes
+  const newKey = [...emails].sort().join('|');
+  const duplicate = Object.values(MAP).find(info => {
+    if (String(info.nodeId) !== String(nodeId)) return false;
+    if (!Array.isArray(info.emails) || info.emails.length !== emails.length) return false;
+    const infoKey = [...info.emails].sort().join('|');
+    if (infoKey !== newKey) return false;
+    if (!info.createdAt) return false;
+    return now - new Date(info.createdAt).getTime() < threshold;
+  });
+  if (duplicate) {
+    return res.status(409).json({ error: 'Documento já foi enviado para este destinatário recentemente.' });
+  }
+
   let token;
   try {
     token = await ensureToken();
@@ -167,7 +182,9 @@ app.get('/start', async (req, res) => {
       fileName,
       workflowId: String(workflowId || ''),
       subworkflowId: String(subworkflowId || workflowId || ''),
-      sendonDone: false // ← para evitar duplicidade na task 3
+      sendonDone: false, // ← para evitar duplicidade na task 3
+      emails,
+      createdAt: new Date().toISOString()
     };
 
     saveMap();
