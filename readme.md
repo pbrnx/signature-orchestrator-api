@@ -33,6 +33,7 @@ Este projeto permite o envio de documentos do OTCS para assinatura eletrônica v
 - 📤 Upload automático do PDF assinado para pasta de destino no OTCS
 - 🧾 Log detalhado (audit.log, error.log, payloads de webhook)
 - 🧼 Purge de arquivos temporários (opcional)
+- 🛑 Checagem de duplicidade: evita reenviar o mesmo documento aos mesmos destinatários em menos de 15 minutos
 
 ---
 
@@ -129,7 +130,7 @@ Usado para:
 - Utiliza o Adobe Sign OAuth 2.0 com refresh token para evitar reautenticações frequentes.
 - Substitui a abordagem de URL pública por autenticação OTDS para ambientes restritos (ex: on-premise).
 - Armazena os arquivos apenas temporariamente e pode implementar cleanup semanal.
-- Toda lógica de mapeamento e rastreio é gerenciada por `agreements.json`.
+- Toda lógica de mapeamento e rastreio é gerenciada por `agreements.json`. Cada entrada guarda destinatários e data de criação para evitar envios duplicados.
 
 ---
 
