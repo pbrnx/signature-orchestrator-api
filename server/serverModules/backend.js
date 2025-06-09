@@ -144,7 +144,7 @@ app.get('/start', async (req, res) => {
     return now - new Date(info.createdAt).getTime() < threshold;
   });
   if (duplicate) {
-    return res.status(409).json({ error: 'Documento já foi enviado para este destinatário recentemente.' });
+    return res.status(409).json({ error: 'El documento ya he sido enviado recientemente a este destinatario.' });
   }
 
   let token;
