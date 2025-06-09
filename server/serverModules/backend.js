@@ -157,8 +157,8 @@ app.get('/start', async (req, res) => {
   try {
     // 1. Baixa PDF original
     const original = await downloadNode(nodeId);
-    const docName = req.query.docName?.trim();
-    const fileName = docName;
+    const docName = (req.query.docName || '').trim();
+    const fileName = docName || `node_${nodeId}.pdf`;
     const filePath = path.join(INP_ROOT, fileName);
     fs.writeFileSync(filePath, original);
 
