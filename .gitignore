@@ -1,3 +1,14 @@
 # dependências
 node_modules/
 
+# arquivos sensíveis
+.env
+tokens.json
+server/serverModules/agreements.json
+
+# arquivos temporários
+inProcess/
+logs/
+
+# scripts locais
+server/http/runngrok.bat
