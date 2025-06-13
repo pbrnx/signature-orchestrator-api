@@ -62,7 +62,7 @@ const url = `${AUTH_BASE}/public/oauth/v2?` +
               `&response_type=code` +
               `&client_id=${CLIENT_ID}` +
               `&scope=${encodeURIComponent(SCOPES.join(' '))}`;
-  res.send(`<a href="${url}">Logar como admin</a>`);
+  res.redirect(url);
 });
 
 //callback autenticado - atualiza o tokens.json
