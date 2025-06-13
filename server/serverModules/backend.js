@@ -7,11 +7,9 @@ const FormData = require('form-data');
 const fs       = require('fs');
 const path     = require('path');
 require('dotenv').config();
-
 const logger = require('../serverModules/logger');
 const { setToken, ensureToken } = require('./tokenManager');
 const { downloadNode, uploadToFolder, sendOnWorkflow } = require('./otcsManager');
-
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
@@ -30,8 +28,6 @@ const MAP_FILE = process.env.NODE_ENV === "production"
   : path.join(__dirname, 'agreements.json');
 let MAP = fs.existsSync(MAP_FILE) ? JSON.parse(fs.readFileSync(MAP_FILE, 'utf8')) : {};
 function saveMap() { fs.writeFileSync(MAP_FILE, JSON.stringify(MAP, null, 2)); }
-
-
 
 
 
@@ -132,6 +128,8 @@ app.get('/start', async (req, res) => {
   if (!emails.length || !nodeId) return res.status(400).json({ error: 'Node ID and Email are mandatory.' });
   if (!attachId || isNaN(+attachId)) return res.status(400).json({ error: 'attachId is mandatory.' });
 
+
+  /* === checa se o mesmo documento foi enviado num intervalo recente para o destinatário escolhido === */
   const now = Date.now();
   const threshold = 15 * 60 * 1000; // 15 minutes
   const newKey = [...emails].sort().join('|');
@@ -382,6 +380,32 @@ if (process.env.NODE_ENV === 'production') {
 
 
 app.use((_,res) => res.status(404).json({error:'Endpoint not found'}));
+
+function basicAuth(req, res, next) {
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Basic ')) {
+    res.set('WWW-Authenticate', 'Basic realm="Logs"');
+    return res.status(401).send('Authentication required.');
+  }
+  const [user, pass] = Buffer.from(auth.split(' ')[1], 'base64').toString().split(':');
+  if (
+    user !== process.env.LOG_USER ||
+    pass !== process.env.LOG_PASS
+  ) {
+    res.set('WWW-Authenticate', 'Basic realm="Logs"');
+    return res.status(401).send('Invalid credentials.');
+  }
+  next();
+}
+
+app.get('/logs', basicAuth, (req, res) => {
+  const logFilePath = path.join(__dirname, '../logs/server.log');
+  if (!fs.existsSync(logFilePath)) {
+    return res.status(404).send('Log file not found.');
+  }
+  res.download(logFilePath, 'server.log');
+});
+
 
 app.listen(PORT, () => {
   logger.info(
