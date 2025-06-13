@@ -379,7 +379,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-app.use((_,res) => res.status(404).json({error:'Endpoint not found'}));
+
 
 function basicAuth(req, res, next) {
   const auth = req.headers.authorization;
@@ -406,6 +406,7 @@ app.get('/logs', basicAuth, (req, res) => {
   res.download(logFilePath, 'server.log');
 });
 
+app.use((_,res) => res.status(404).json({error:'Endpoint not found'}));
 
 app.listen(PORT, () => {
   logger.info(
