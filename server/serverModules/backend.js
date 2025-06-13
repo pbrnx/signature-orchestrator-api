@@ -399,7 +399,9 @@ function basicAuth(req, res, next) {
 }
 
 app.get('/logs', basicAuth, (req, res) => {
-  const logFilePath = path.join(__dirname, '../logs/server.log');
+  const logFilePath = process.env.NODE_ENV === 'production'
+    ? '/tmp/server.log'
+    : path.join(__dirname, '../logs/server.log');
   if (!fs.existsSync(logFilePath)) {
     return res.status(404).send('Log file not found.');
   }
