@@ -1,6 +1,6 @@
 # 🔐 Adobe Sign + OpenText xECM Integration
-
-Automated digital signature workflow using Adobe Sign, fully integrated with OpenText Content Server (OTCS).
+A RESTful API buiitfor orchestrating electronic document signature workflows via Adobe Sign, with full integration to OpenText Content Server (OTCS).  
+Exposes endpoints to trigger document signing, monitor status via webhooks, and automate document storage — with full support for OAuth, multiple recipients, and workflow transitions.
 
 ## 📌 Purpose
 
@@ -11,7 +11,7 @@ This project enables the sending of documents from OTCS to Adobe Sign for electr
 ## 🧱 Architecture
 
 - **Frontend (HTML + JS)**  
-  Embedded page within OTCS via WebReport, used as the execution trigger.
+  Embedded page within OTCS via WebReport, used as the execution trigger. (A webreport is virtually an HTML page ran inside the main application, with the difference that is supports internal tags and placeholders that are replaced with actual data. If you try and check the HTML, be aware that you'll find these odd non-html stuff.)
 
 - **Backend (Node.js + Express)**  
   Server responsible for:
@@ -151,10 +151,18 @@ Used to:
 
 ## 🧙‍♂️ Developer
 
-Pedro Barone
+This project was fully built by **Pedro Barone**, from scratch, without external help in the name of Stratesys, allocated on a project for Keralty. 
+I was responsible for:
 
+- Designing the API architecture
+- Implementing secure OAuth2 authentication (Adobe Sign)
+- Integrating with OpenText Content Server (OTCS)
+- Building all endpoints and background tasks
+- Handling file streaming and asynchronous webhook events
+- Logging, error handling, and cleanup routines
+- Deployment and environment configuration
 ---
 
 ## 📄 License
 
-This project is for internal use by Stratesys employees only.
+This project is for internal use by Stratesys employees only. Any unauthorized copies are illegal according to copyright laws. 
