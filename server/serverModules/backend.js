@@ -261,7 +261,7 @@ app.get('/webhook', (req, res) => {
 });
 
 
-// --- HANDSHAKE POST + LÓGICA DO SEU WEBHOOK ---
+// --- HANDSHAKE POST---
 app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
   const cid = req.headers['x-adobesign-clientid'] ||
   req.headers['x-adobesign-client-id'] ||
@@ -282,7 +282,7 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
  logger.info(`Webhook raw (trunc): ${short}${payload.length > 4000 ? '…' : ''}`);
 
   
-  // --- Seu código de eventos do webhook aqui ---
+  // ---  eventos do webhook aqui ---
   const agreementId = payload.event?.agreementId || payload.agreement?.id || payload.agreementId;
   const evt = payload.event?.eventType || payload.event || payload.type || 'UNKNOWN_EVENT';
   const participant = payload.event?.participantUserEmail || payload.participantUserEmail || 'unknown';
@@ -407,6 +407,7 @@ app.get('/logs', basicAuth, (req, res) => {
   }
   res.download(logFilePath, 'server.log');
 });
+
 
 app.use((_,res) => res.status(404).json({error:'Endpoint not found'}));
 

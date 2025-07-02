@@ -1,105 +1,104 @@
+# 🔐 Adobe Sign + OpenText xECM Integration
 
-# 🔐 Integração Adobe Sign + OpenText xECM
+Automated digital signature workflow using Adobe Sign, fully integrated with OpenText Content Server (OTCS).
 
-Automatização do processo de assinatura digital via Adobe Sign, com integração customizada ao OpenText Content Server (OTCS).
+## 📌 Purpose
 
-## 📌 Objetivo
-
-Este projeto permite o envio de documentos do OTCS para assinatura eletrônica via Adobe Sign, recebimento automático do documento assinado e upload final para a pasta apropriada no Content Server, tudo via API — sem intervenção manual.
+This project enables the sending of documents from OTCS to Adobe Sign for electronic signatures, automatic retrieval of the signed document, and final upload to the correct folder in the Content Server — all via API, with no manual intervention.
 
 ---
 
-## 🧱 Arquitetura
+## 🧱 Architecture
 
 - **Frontend (HTML + JS)**  
-  Página embutida no OTCS via WebReport, usada como trigger de execução.
-  
+  Embedded page within OTCS via WebReport, used as the execution trigger.
+
 - **Backend (Node.js + Express)**  
-  Servidor que realiza:
-  - Autenticação OAuth2 com Adobe Sign (via refresh token)
-  - Download de documentos via API do OTCS (autenticado via OTDS)
-  - Envio para assinatura
-  - Monitoramento assíncrono via Webhook
-  - Upload automático do PDF assinado para o OTCS
+  Server responsible for:
+  - OAuth2 authentication with Adobe Sign (via refresh token)
+  - Document download via OTCS API (authenticated via OTDS)
+  - Sending documents for signature
+  - Asynchronous monitoring via Webhook
+  - Automatic upload of the signed PDF to OTCS
 
 ---
 
-## ⚙️ Funcionalidades
+## ⚙️ Features
 
-- 🔁 Integração contínua com Adobe Sign via refresh token
-- 📥 Download seguro do PDF original via API do OTCS
-- ✍️ Envio para múltiplos signatários (via Adobe Sign)
-- 📡 Webhook para monitorar status da assinatura
-- 📤 Upload automático do PDF assinado para pasta de destino no OTCS
-- 🧾 Log detalhado (audit.log, error.log, payloads de webhook)
-- 🧼 Purge de arquivos temporários (opcional)
-- 🛑 Checagem de duplicidade: evita reenviar o mesmo documento aos mesmos destinatários em menos de 15 minutos
+- 🔁 Continuous integration with Adobe Sign using refresh token
+- 📅 Secure download of the original PDF via OTCS API
+- ✍️ Supports multiple signers (via Adobe Sign)
+- 📡 Webhook to monitor signature status
+- 📄 Automatic upload of the signed PDF to the designated folder in OTCS
+- 🗒️ Detailed logging (`audit.log`, `error.log`, webhook payloads)
+- 🧼 Optional purge of temporary files
+- ⛔ Duplicate check: prevents resending the same document to the same recipients within 15 minutes
 
 ---
 
-## 🚀 Como rodar
+## 🚀 How to Run
 
-### 1. Clone o projeto
+### 1. Clone the repository
 
-```
+```bash
 git clone https://github.com/Activos-Digitales-xECM-LATAM/adobe-api.git
-cd nome-do-projeto
+cd project-name
 ```
 
-### 2. Instale as dependências
+### 2. Install dependencies
 
-```
+```bash
 npm install
 ```
 
-### 3. Configure o `.env`
+### 3. Configure `.env`
 
-Crie um arquivo `.env` na raiz com as seguintes variáveis:
+Create a `.env` file in the root folder with the following variables:
 
-```
+```env
 # Adobe Sign
-CLIENT_ID=seu_client_id
-CLIENT_SECRET=seu_client_secret
-NGROK_HOST=https://seu-endpoint.ngrok.app (opcional, pode usar qualquer tunel http ou fazer port-forward e expor seu IP)
+CLIENT_ID=your_client_id
+CLIENT_SECRET=your_client_secret
+NGROK_HOST=https://your-endpoint.ngrok.app (optional, you can use any HTTP tunnel or port-forwarded IP)
 
 # OpenText
-OTCS_BASE=https://seu-content-server/api/v1
-OTCS_USER=usuario.otds
-OTCS_PASS=senha.otds
+OTCS_BASE=https://your-content-server/api/v1
+OTCS_USER=otds.username
+OTCS_PASS=otds.password
 ```
 
-### 4. Rode o servidor
+### 4. Start the server
 
-```
+```bash
 node backend.js
 ```
 
 ---
 
-## 🔁 Webhook
+## 🔀 Webhook
 
 - **Endpoint:** `/webhook`
-- **Verbo:** `POST`
+- **Method:** `POST`
 - **Content-Type:** `application/json`
 
-Usado para:
+Used to:
 
-- Monitorar eventos de assinatura (ex: `AGREEMENT_COMPLETED`)
-- Baixar PDF assinado
-- Subir o novo documento para o OTCS
+- Monitor signature events (e.g., `AGREEMENT_COMPLETED`)
+- Download signed PDF
+- Upload the document to OTCS
 
 ---
 
-## 📁 Estrutura de Pastas
+## 📁 Folder Structure
 
 ```
 /
-├── .env                  # Variáveis de ambiente
+├── .env                  # Environment variables
 ├── .gitignore
 ├── package.json
 ├── package-lock.json
 ├── readme.md
-├── tokens.json           # Tokens salvos (evitar commitar)
+├── tokens.json           # Stored tokens (avoid committing this)
 │
 ├── node_modules/
 │
@@ -109,7 +108,7 @@ Usado para:
     │   └── runngrok.bat
     │
     ├── inProcess/
-    │   └── Documento.pdf (aqui ficam os temporários)
+    │   └── Document.pdf (temporary storage)
     │
     ├── logs/
     │   ├── audit.log
@@ -124,37 +123,38 @@ Usado para:
         └── tokenManager.js
 ```
 
+---
 
-## 🧠 Insights Técnicos
+## 🧠 Technical Insights
 
-- Utiliza o Adobe Sign OAuth 2.0 com refresh token para evitar reautenticações frequentes.
-- Substitui a abordagem de URL pública por autenticação OTDS para ambientes restritos (ex: on-premise).
-- Armazena os arquivos apenas temporariamente e pode implementar cleanup semanal.
-- Toda lógica de mapeamento e rastreio é gerenciada por `agreements.json`. Cada entrada guarda destinatários e data de criação para evitar envios duplicados.
+- Uses Adobe Sign OAuth 2.0 with refresh token to avoid frequent re-authentication.
+- Replaces public URL method with OTDS authentication for secure, restricted environments.
+- Temporarily stores files with optional weekly cleanup.
+- All mapping and tracking logic is managed by `agreements.json`, storing recipients and creation dates to avoid duplicate sends.
 
 ---
 
-## 🛡️ Segurança
+## 🛡️ Security
 
-- Nenhum token sensível fica exposto no frontend.
-- Senhas e chaves são lidas via `.env`.
-- Webhook ignora eventos irrelevantes e só processa os acordos mapeados.
-
----
-
-## 🧪 Testes
-
-- Compatível com documentos protegidos
-- Suporta múltiplos signatários
+- No sensitive tokens are exposed on the frontend.
+- Passwords and keys are read from the `.env` file.
+- Webhook filters out irrelevant events and only processes mapped agreements.
 
 ---
 
-## 🧙‍♂️ Desenvolvedor
+## 🧊 Testing
+
+- Compatible with protected documents
+- Supports multiple signers
+
+---
+
+## 🧙‍♂️ Developer
 
 Pedro Barone
 
 ---
 
-## 📄 Licença
+## 📄 License
 
-Esse projeto pode ser reutilizado internamente por funcionários da Stratesys. 
+This project is for internal use by Stratesys employees only.
