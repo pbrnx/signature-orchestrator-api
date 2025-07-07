@@ -1,16 +1,16 @@
 //backend.js
 //imports
-const express  = require('express');
-const axios    = require('axios');
-const cors     = require('cors');
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
 const FormData = require('form-data');
-const fs       = require('fs');
-const path     = require('path');
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
 const logger = require('../serverModules/logger');
 const { setToken, ensureToken } = require('./tokenManager');
 const { downloadNode, uploadToFolder, sendOnWorkflow } = require('./otcsManager');
-const app  = express();
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 /* === Diretórios === */
@@ -32,12 +32,12 @@ function saveMap() { fs.writeFileSync(MAP_FILE, JSON.stringify(MAP, null, 2)); }
 
 
 /* === Adobe Sign Credentials=== */
-const CLIENT_ID     = process.env.CLIENT_ID;
+const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const NGROK_HOST = 'https://adobe-api-deploy.onrender.com';
-const REDIRECT_URI  = `${NGROK_HOST}/admin/callback`;
-const API_BASE      = 'https://api.na4.adobesign.com';
-const AUTH_BASE     = 'https://secure.na4.adobesign.com';
+const REDIRECT_URI = `${NGROK_HOST}/admin/callback`;
+const API_BASE = 'https://api.na4.adobesign.com';
+const AUTH_BASE = 'https://secure.na4.adobesign.com';
 
 
 
@@ -46,18 +46,18 @@ app.get('/admin/login', (_, res) => {
   const SCOPES = [
     'agreement_send:account',
     'agreement_write:account',
-    'agreement_read:account',   
+    'agreement_read:account',
     'account_read:account',
     'account_write:account',
     'user_login:account'
   ];
 
 
-const url = `${AUTH_BASE}/public/oauth/v2?` +
-              `redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
-              `&response_type=code` +
-              `&client_id=${CLIENT_ID}` +
-              `&scope=${encodeURIComponent(SCOPES.join(' '))}`;
+  const url = `${AUTH_BASE}/public/oauth/v2?` +
+    `redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
+    `&response_type=code` +
+    `&client_id=${CLIENT_ID}` +
+    `&scope=${encodeURIComponent(SCOPES.join(' '))}`;
   res.redirect(url);
 });
 
@@ -90,8 +90,8 @@ app.get('/health', (_, res) => res.status(200).json({ status: 'ok' }));
 
 /* === Middlewares globais === */
 app.use(cors());
-app.use(express.json({ limit:'10mb' }));
-app.use(express.urlencoded({ extended:true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
 let lastRouteGroup = null;
 
 app.use((req, _, next) => {
@@ -117,8 +117,6 @@ app.use((req, _, next) => {
   }
   next();
 });
-
-
 
 /* === /start === */
 app.get('/start', async (req, res) => {
@@ -199,8 +197,8 @@ app.get('/start', async (req, res) => {
       }).then(() => {
         logger.info(`SendOn automático realizado para workflow ${workflowId}`);
       }).catch(e => {
-  logger.error(`Falha no SendOn automático: ${e.message} | OTCS: ${JSON.stringify(e.response?.data)}`);
-});
+        logger.error(`Falha no SendOn automático: ${e.message} | OTCS: ${JSON.stringify(e.response?.data)}`);
+      });
     }
 
     // *** SÓ UMA RESPOSTA PARA O FRONT ***
@@ -214,14 +212,14 @@ app.get('/start', async (req, res) => {
   }
 });
 
-async function triggerDisposition(agreementId, disposition){
+async function triggerDisposition(agreementId, disposition) {
   const info = MAP[agreementId];
-  if(!info || !info.workflowId) {
+  if (!info || !info.workflowId) {
     logger.warn(`No workflowId stored for ${agreementId}; disposition skipped`);
     return;
   }
 
-  try{
+  try {
     await sendOnWorkflow({
       workflowId: info.workflowId,
       subworkflowId: info.subworkflowId || info.workflowId,
@@ -232,7 +230,7 @@ async function triggerDisposition(agreementId, disposition){
     info.sendonDone = true;
     saveMap();
     logger.info(`SendOn task 3 (${disposition}) done for workflow ${info.workflowId}`);
-  }catch(e){
+  } catch (e) {
     logger.error(`SendOn task 3 failed: ${e.message}`);
   }
 }
@@ -262,11 +260,11 @@ app.get('/webhook', (req, res) => {
 
 
 // --- HANDSHAKE POST---
-app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
+app.post('/webhook', express.json({ limit: '10mb' }), async (req, res) => {
   const cid = req.headers['x-adobesign-clientid'] ||
-  req.headers['x-adobesign-client-id'] ||
-  CLIENT_ID;
- res.setHeader('X-AdobeSign-ClientId', cid);
+    req.headers['x-adobesign-client-id'] ||
+    CLIENT_ID;
+  res.setHeader('X-AdobeSign-ClientId', cid);
 
   // Parse seguro do corpo
   let payload = {};
@@ -279,9 +277,9 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
   }
   //Logging webhook
   const short = JSON.stringify(payload).slice(0, 4000); // 4 KB cap
- logger.info(`Webhook raw (trunc): ${short}${payload.length > 4000 ? '…' : ''}`);
+  logger.info(`Webhook raw (trunc): ${short}${payload.length > 4000 ? '…' : ''}`);
 
-  
+
   // ---  eventos do webhook aqui ---
   const agreementId = payload.event?.agreementId || payload.agreement?.id || payload.agreementId;
   const evt = payload.event?.eventType || payload.event || payload.type || 'UNKNOWN_EVENT';
@@ -297,7 +295,7 @@ app.post('/webhook', express.json({limit:'10mb'}), async (req, res) => {
   );
 
   //if (!agreementId || !MAP[agreementId]) return res.status(200).send('OK');
-  
+
   const info = MAP[agreementId];
 
   const PDF_EVENTS = [
@@ -375,7 +373,7 @@ if (process.env.NODE_ENV === 'production') {
     axios.get(`${NGROK_HOST}/health`)
       .then(() => logger.info('[KEEPALIVE] Ping interno OK'))
       .catch(err => logger.warn(`[KEEPALIVE] Falha no ping interno: ${err.message}`));
-  }, 1000 * 60 * 10); 
+  }, 1000 * 60 * 10);
 }
 
 
@@ -409,7 +407,7 @@ app.get('/logs', basicAuth, (req, res) => {
 });
 
 
-app.use((_,res) => res.status(404).json({error:'Endpoint not found'}));
+app.use((_, res) => res.status(404).json({ error: 'Endpoint not found' }));
 
 app.listen(PORT, () => {
   logger.info(

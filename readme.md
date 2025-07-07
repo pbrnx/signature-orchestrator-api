@@ -1,6 +1,6 @@
 # 🔐 Adobe Sign + OpenText xECM Integration
-A RESTful API buiitfor orchestrating electronic document signature workflows via Adobe Sign, with full integration to OpenText Content Server (OTCS).  
-Exposes endpoints to trigger document signing, monitor status via webhooks, and automate document storage — with full support for OAuth, multiple recipients, and workflow transitions.
+A RESTful API built for orchestrating electronic document signature workflows via Adobe Sign, with full integration to OpenText Content Server (OTCS).  
+Exposes endpoints to trigger document signing, monitor status via webhooks, and automate document storage — with full support for OAuth, multiple recipients, and workflow transitions. Pedro
 
 ## 📌 Purpose
 
