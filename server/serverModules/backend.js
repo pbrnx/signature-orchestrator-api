@@ -103,8 +103,8 @@ app.use((req, _, next) => {
 
   logger.info(`${req.method} ${req.originalUrl}`);
 
-  if (req.method === 'GET' && req.path === '/start') {
-    const { userEmail1, userEmail2, nodeId, attachId, docName } = req.query;
+  if (req.method === 'POST' && req.path === '/start') {
+    const { userEmail1, userEmail2, nodeId, attachId, docName } = req.body;
     const emails = [userEmail1, userEmail2].filter(Boolean).join(', ');
 
     logger.info(
@@ -119,8 +119,8 @@ app.use((req, _, next) => {
 });
 
 /* === /start === */
-app.get('/start', async (req, res) => {
-  const { userEmail1, userEmail2, nodeId, attachId, workflowId, subworkflowId, taskId } = req.query;
+app.post('/start', async (req, res) => {
+  const { userEmail1, userEmail2, nodeId, attachId, workflowId, subworkflowId, taskId } = req.body;
   const emails = [userEmail1, userEmail2]
     .filter(Boolean).flatMap(e => e.split(/[;,]+/)).map(e => e.trim()).filter(e => e.includes('@'));
   if (!emails.length || !nodeId) return res.status(400).json({ error: 'Node ID and Email are mandatory.' });
