@@ -345,7 +345,7 @@ async function overwritePdf(agreementId, tries = 0) {
 
   try {
     const rsp = await axios.get(
-      `${API_BASE}/api/rest/v6/agreements/${agreementId}/combinedDocument`,
+      `${API_BASE}/api/rest/v6/agreements/${agreementId}/combinedDocument?attachAuditReport=true`,
       {
         responseType: 'stream',
         headers: { Authorization: `Bearer ${token}` },
