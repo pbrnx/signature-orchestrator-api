@@ -122,7 +122,7 @@ app.use((req, _, next) => {
 });
 
 // Rota para fornecer timestamp + assinatura HMAC ao cliente
-app.get('/auth', (req, res) => {
+app.get('/auth', basicAuth, (req, res) => {
   const timestamp = Date.now().toString();
   const hmac = crypto
     .createHmac('sha256', process.env.SIGNATURE_SECRET)
