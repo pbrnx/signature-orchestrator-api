@@ -120,8 +120,11 @@ app.use((req, _, next) => {
 
 /* === /start === */
 app.post('/start', async (req, res) => {
+  logger.info(`[DEBUG] Payload recebido no body: ${JSON.stringify(req.body, null, 2)}`);
+
   const { userEmail1, userEmail2, nodeId, attachId, workflowId, subworkflowId, taskId } = req.body;
   const emails = [userEmail1, userEmail2]
+  
     .filter(Boolean).flatMap(e => e.split(/[;,]+/)).map(e => e.trim()).filter(e => e.includes('@'));
   if (!emails.length || !nodeId) return res.status(400).json({ error: 'Node ID and Email are mandatory.' });
   if (!attachId || isNaN(+attachId)) return res.status(400).json({ error: 'attachId is mandatory.' });
@@ -153,7 +156,7 @@ app.post('/start', async (req, res) => {
   try {
     // 1. Baixa PDF original
     const original = await downloadNode(nodeId);
-    const docName = req.query.docName?.trim();
+    const docName = req.body.docName?.trim();
     const fileName = docName;
     const filePath = path.join(INP_ROOT, fileName);
     fs.writeFileSync(filePath, original);
