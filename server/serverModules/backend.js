@@ -120,8 +120,6 @@ app.use((req, _, next) => {
 
 /* === /start === */
 app.post('/start', async (req, res) => {
-  logger.info(`[DEBUG] Payload recebido no body: ${JSON.stringify(req.body, null, 2)}`);
-
   const { userEmail1, userEmail2, nodeId, attachId, workflowId, subworkflowId, taskId } = req.body;
   const emails = [userEmail1, userEmail2]
   
