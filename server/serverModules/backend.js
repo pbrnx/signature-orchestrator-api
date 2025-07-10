@@ -38,6 +38,9 @@ const NGROK_HOST = 'https://adobe-api-deploy.onrender.com';
 const REDIRECT_URI = `${NGROK_HOST}/admin/callback`;
 const API_BASE = 'https://api.na4.adobesign.com';
 const AUTH_BASE = 'https://secure.na4.adobesign.com';
+const crypto = require('crypto');
+
+
 
 
 
@@ -118,8 +121,46 @@ app.use((req, _, next) => {
   next();
 });
 
+// Rota para fornecer timestamp + assinatura HMAC ao cliente
+app.get('/auth', (req, res) => {
+  const timestamp = Date.now().toString();
+  const hmac = crypto
+    .createHmac('sha256', process.env.SIGNATURE_SECRET)
+    .update(timestamp)
+    .digest('hex');
+  res.json({ timestamp, signature: hmac });
+});
+
+//auth para validar se requisição é válida
+function verifySignature(req, res, next) {
+  const { signature, timestamp } = req.body;
+  if (!signature || !timestamp) {
+    return res.status(401).json({ error: "Missing signature or timestamp." });
+  }
+  if (!/^[a-f0-9]{64}$/i.test(signature)) {
+    return res.status(400).json({ error: "Malformed signature." });
+  }
+  // intervalo de 2 minutos
+  const age = Math.abs(Date.now() - Number(timestamp));
+  if (age > 2 * 60 * 1000) {
+    return res.status(403).json({ error: "Timestamp expired." });
+  }
+  const expected = crypto
+    .createHmac('sha256', process.env.SIGNATURE_SECRET)
+    .update(timestamp)
+    .digest();
+  const received = Buffer.from(signature, 'hex');
+  if (
+    expected.length !== received.length ||
+    !crypto.timingSafeEqual(expected, received)
+  ) {
+    return res.status(403).json({ error: "Invalid signature." });
+  }
+  next();
+}
+
 /* === /start === */
-app.post('/start', async (req, res) => {
+app.post('/start', verifySignature, async (req, res) => {
   const { userEmail1, userEmail2, nodeId, attachId, workflowId, subworkflowId, taskId } = req.body;
   const emails = [userEmail1, userEmail2]
   
