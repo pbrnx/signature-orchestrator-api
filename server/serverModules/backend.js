@@ -1,5 +1,6 @@
-//backend.js
-//imports
+// backend.js
+
+// ===== Imports and Core Setup =====
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
@@ -7,13 +8,19 @@ const FormData = require('form-data');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
+
+// Custom modules for logging and OTCS/Adobe Sign token/file ops
 const logger = require('../serverModules/logger');
 const { setToken, ensureToken } = require('./tokenManager');
 const { downloadNode, uploadToFolder, sendOnWorkflow } = require('./otcsManager');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-/* === Diretórios === */
+/* 
+  === Folders and File System Prep ===
+  Prepares working folders both for dev/prod and loads/saves the agreement mapping file.
+*/
 if (process.env.NODE_ENV === "production" && !fs.existsSync('/tmp')) {
   fs.mkdirSync('/tmp', { recursive: true });
 }
@@ -26,12 +33,14 @@ if (!fs.existsSync(INP_ROOT)) fs.mkdirSync(INP_ROOT, { recursive: true });
 const MAP_FILE = process.env.NODE_ENV === "production"
   ? "/tmp/agreements.json"
   : path.join(__dirname, 'agreements.json');
+// Agreements map: links AdobeSign agreements to OTCS nodes/workflows/etc
 let MAP = fs.existsSync(MAP_FILE) ? JSON.parse(fs.readFileSync(MAP_FILE, 'utf8')) : {};
 function saveMap() { fs.writeFileSync(MAP_FILE, JSON.stringify(MAP, null, 2)); }
 
-
-
-/* === Adobe Sign Credentials=== */
+/*
+  === Adobe Sign / API Config ===
+  Sets up credentials and API endpoints for OAuth and REST calls.
+*/
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const NGROK_HOST = 'https://adobe-api-deploy.onrender.com';
@@ -40,11 +49,9 @@ const API_BASE = 'https://api.na4.adobesign.com';
 const AUTH_BASE = 'https://secure.na4.adobesign.com';
 const crypto = require('crypto');
 
+// === Admin Routes for OAuth Flow ===
 
-
-
-
-//admin route (scopes)
+// Route: Login with Adobe Sign - redirects to consent page with needed scopes
 app.get('/admin/login', (_, res) => {
   const SCOPES = [
     'agreement_send:account',
@@ -54,8 +61,6 @@ app.get('/admin/login', (_, res) => {
     'account_write:account',
     'user_login:account'
   ];
-
-
   const url = `${AUTH_BASE}/public/oauth/v2?` +
     `redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
     `&response_type=code` +
@@ -64,7 +69,7 @@ app.get('/admin/login', (_, res) => {
   res.redirect(url);
 });
 
-//callback autenticado - atualiza o tokens.json
+// Route: OAuth2 callback - exchanges code for tokens and saves them locally
 app.get('/admin/callback', async (req, res) => {
   const { code } = req.query;
   try {
@@ -79,8 +84,8 @@ app.get('/admin/callback', async (req, res) => {
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
     setToken(r.data.access_token, r.data.expires_in, r.data.refresh_token);
-    logger.info('Token salvo com sucesso');
-    res.send('<h1>Token salvo</h1>');
+    logger.info('Token saved successfully');
+    res.send('<h1>Token saved</h1>');
   } catch (e) {
     const msg = e.response?.data?.error_description || e.message;
     logger.error(`OAUTH CALLBACK ERROR: ${msg}`);
@@ -88,10 +93,15 @@ app.get('/admin/callback', async (req, res) => {
   }
 });
 
+// Simple healthcheck route
 app.get('/health', (_, res) => res.status(200).json({ status: 'ok' }));
 
-
-/* === Middlewares globais === */
+/*
+  === Global Middlewares ===
+  - CORS
+  - JSON and URLENCODED body parsers
+  - Route logger with grouping for easier CLI/Log reading
+*/
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -99,17 +109,14 @@ let lastRouteGroup = null;
 
 app.use((req, _, next) => {
   const currentGroup = `${req.method} ${req.path}`;
-
-  // Se mudou de grupo de rota, insere quebra visual real no console
   if (lastRouteGroup && lastRouteGroup !== currentGroup) console.log('');
   lastRouteGroup = currentGroup;
-
   logger.info(`${req.method} ${req.originalUrl}`);
 
+  // Log POST /start with extra context (who/what is being signed)
   if (req.method === 'POST' && req.path === '/start') {
     const { userEmail1, userEmail2, nodeId, attachId, docName } = req.body;
     const emails = [userEmail1, userEmail2].filter(Boolean).join(', ');
-
     logger.info(
       `Signature request initiated\n` +
       `  → Document: ${decodeURIComponent(docName || '?')}\n` +
@@ -121,7 +128,12 @@ app.use((req, _, next) => {
   next();
 });
 
-// Rota para fornecer timestamp + assinatura HMAC ao cliente
+/*
+  === HMAC Auth Endpoints ===
+  - /auth GET: Used by frontend to get timestamp and HMAC, with basic auth
+  - verifySignature middleware: Used by POST /start to enforce signed requests and freshness window
+*/
+// Endpoint: Issues timestamp+signature to front
 app.get('/auth', basicAuth, (req, res) => {
   const timestamp = Date.now().toString();
   const hmac = crypto
@@ -131,7 +143,7 @@ app.get('/auth', basicAuth, (req, res) => {
   res.json({ timestamp, signature: hmac });
 });
 
-//auth para validar se requisição é válida
+// Middleware: Verifies timestamp+HMAC in sensitive requests (e.g., /start)
 function verifySignature(req, res, next) {
   const { signature, timestamp } = req.body;
   if (!signature || !timestamp) {
@@ -140,7 +152,7 @@ function verifySignature(req, res, next) {
   if (!/^[a-f0-9]{64}$/i.test(signature)) {
     return res.status(400).json({ error: "Malformed signature." });
   }
-  // intervalo de 2 minutos
+  // Only accept requests within 2 minutes of the signature
   const age = Math.abs(Date.now() - Number(timestamp));
   if (age > 2 * 60 * 1000) {
     return res.status(403).json({ error: "Timestamp expired." });
@@ -159,19 +171,22 @@ function verifySignature(req, res, next) {
   next();
 }
 
-/* === /start === */
+/*
+  === Main Signature Workflow (/start) ===
+  - Receives sign request, checks for recent duplicate
+  - Downloads file from OTCS, uploads to Adobe, creates agreement, logs locally
+  - Optionally triggers workflow movement on OTCS in background
+*/
 app.post('/start', verifySignature, async (req, res) => {
   const { userEmail1, userEmail2, nodeId, attachId, workflowId, subworkflowId, taskId } = req.body;
   const emails = [userEmail1, userEmail2]
-  
     .filter(Boolean).flatMap(e => e.split(/[;,]+/)).map(e => e.trim()).filter(e => e.includes('@'));
   if (!emails.length || !nodeId) return res.status(400).json({ error: 'Node ID and Email are mandatory.' });
   if (!attachId || isNaN(+attachId)) return res.status(400).json({ error: 'attachId is mandatory.' });
 
-
-  /* === checa se o mesmo documento foi enviado num intervalo recente para o destinatário escolhido === */
+  // Prevent duplicate submissions within threshold window (per doc/recipients)
   const now = Date.now();
-  const threshold = 15 * 60 * 1000; // 15 minutes
+  const threshold = 15 * 60 * 1000; // 15 min
   const newKey = [...emails].sort().join('|');
   const duplicate = Object.values(MAP).find(info => {
     if (String(info.nodeId) !== String(nodeId)) return false;
@@ -193,20 +208,20 @@ app.post('/start', verifySignature, async (req, res) => {
   }
 
   try {
-    // 1. Baixa PDF original
+    // Download PDF from OTCS
     const original = await downloadNode(nodeId);
     const docName = req.body.docName?.trim();
     const fileName = docName;
     const filePath = path.join(INP_ROOT, fileName);
     fs.writeFileSync(filePath, original);
 
-    // 2. Upload p/ transient
+    // Upload PDF to Adobe Sign (as transient doc)
     const fd = new FormData();
     fd.append('File', fs.createReadStream(filePath), { filename: fileName, contentType: 'application/pdf' });
     const up = await axios.post(`${API_BASE}/api/rest/v6/transientDocuments`, fd,
       { headers: { Authorization: `Bearer ${token}`, ...fd.getHeaders() } });
 
-    // 3. Cria agreement
+    // Create agreement (envelope) on Adobe Sign
     const ag = await axios.post(`${API_BASE}/api/rest/v6/agreements`, {
       name: `Documento ${fileName}`,
       fileInfos: [{ transientDocumentId: up.data.transientDocumentId }],
@@ -214,22 +229,22 @@ app.post('/start', verifySignature, async (req, res) => {
       signatureType: 'ESIGN', state: 'IN_PROCESS'
     }, { headers: { Authorization: `Bearer ${token}` } });
 
+    // Store agreement metadata locally (for later automation)
     MAP[ag.data.id] = {
       nodeId: String(nodeId),
       attachId: String(attachId),
       fileName,
       workflowId: String(workflowId || ''),
       subworkflowId: String(subworkflowId || workflowId || ''),
-      sendonDone: false, // ← para evitar duplicidade na task 3
+      sendonDone: false,
       emails,
       createdAt: new Date().toISOString()
     };
-
     saveMap();
 
     logger.info(`Signature requested: ${ag.data.id}`);
 
-    // *** EXECUTA SENDON EM BACKGROUND (NÃO ESPERA) ***
+    // Trigger sendOnWorkflow in background (do not block client)
     if (workflowId) {
       sendOnWorkflow({
         workflowId,
@@ -243,7 +258,7 @@ app.post('/start', verifySignature, async (req, res) => {
       });
     }
 
-    // *** SÓ UMA RESPOSTA PARA O FRONT ***
+    // Reply to frontend: agreement created
     res.json({ message: `Signature requested. ID: ${ag.data.id}` });
 
   } catch (e) {
@@ -254,6 +269,10 @@ app.post('/start', verifySignature, async (req, res) => {
   }
 });
 
+/*
+  === Workflow Advancement Handler ===
+  - Used to send tasks forward in the OTCS workflow after signature events
+*/
 async function triggerDisposition(agreementId, disposition) {
   const info = MAP[agreementId];
   if (!info || !info.workflowId) {
@@ -277,52 +296,51 @@ async function triggerDisposition(agreementId, disposition) {
   }
 }
 
-
-/// --- HANDSHAKE HEAD ---
+/*
+  === Adobe Sign Webhook Handshake and Event Handling ===
+  - HEAD/GET for webhook setup/validation
+  - POST for processing all Adobe Sign event notifications
+*/
+// HEAD: Required by Adobe for webhook validation handshake
 app.head('/webhook', (req, res) => {
   res.setHeader('X-AdobeSign-ClientId', CLIENT_ID);
   res.setHeader('Content-Type', 'application/json');
-  res.status(200).end();          // sem body
+  res.status(200).end(); // HEAD never returns a body
 });
 
-// --- HANDSHAKE GET ---
+// GET: Webhook challenge/handshake
 app.get('/webhook', (req, res) => {
   const cid = req.headers['x-adobesign-clientid'] || CLIENT_ID;
-
   if (req.query.challenge) {
     res.setHeader('X-AdobeSign-ClientId', cid);
     res.setHeader('Content-Type', 'text/plain');
     return res.status(200).send(`${req.query.challenge}`);
   }
-
   res.setHeader('X-AdobeSign-ClientId', cid);
   res.setHeader('Content-Type', 'application/json');
   return res.status(200).json({ status: 'pong' });
 });
 
-
-// --- HANDSHAKE POST---
+// POST: Receives all webhook events from Adobe Sign (signature complete, rejected, etc)
 app.post('/webhook', express.json({ limit: '10mb' }), async (req, res) => {
   const cid = req.headers['x-adobesign-clientid'] ||
     req.headers['x-adobesign-client-id'] ||
     CLIENT_ID;
   res.setHeader('X-AdobeSign-ClientId', cid);
 
-  // Parse seguro do corpo
+  // Parse the body, even if stringified JSON (defensive)
   let payload = {};
   try {
     payload = typeof req.body === 'object' ? req.body : JSON.parse(req.body.toString());
   } catch (err) {
     logger.error(`Webhook parse error: ${err.message}`);
     return res.status(400).send('Invalid webhook payload');
-
   }
-  //Logging webhook
-  const short = JSON.stringify(payload).slice(0, 4000); // 4 KB cap
+  // Log first 4KB of webhook for diagnostics
+  const short = JSON.stringify(payload).slice(0, 4000);
   logger.info(`Webhook raw (trunc): ${short}${payload.length > 4000 ? '…' : ''}`);
 
-
-  // ---  eventos do webhook aqui ---
+  // Parse core event info from Adobe payload (defensive for different schemas)
   const agreementId = payload.event?.agreementId || payload.agreement?.id || payload.agreementId;
   const evt = payload.event?.eventType || payload.event || payload.type || 'UNKNOWN_EVENT';
   const participant = payload.event?.participantUserEmail || payload.participantUserEmail || 'unknown';
@@ -336,10 +354,8 @@ app.post('/webhook', express.json({ limit: '10mb' }), async (req, res) => {
     `  → Date: ${timestamp}`
   );
 
-  //if (!agreementId || !MAP[agreementId]) return res.status(200).send('OK');
-
+  // PDF/complete events: download signed PDF, update OTCS, move workflow
   const info = MAP[agreementId];
-
   const PDF_EVENTS = [
     'DOCUMENT_SIGNED', 'PARTICIPANT_COMPLETED', 'PARTICIPANT_SIGNED',
     'AGREEMENT_COMPLETED', 'AGREEMENT_SIGNED', 'AGREEMENT_ACTION_COMPLETED',
@@ -370,8 +386,11 @@ app.post('/webhook', express.json({ limit: '10mb' }), async (req, res) => {
   res.status(200).send('OK');
 });
 
-
-
+/*
+  === PDF Overwrite Helper ===
+  - Downloads signed file from Adobe, pushes to OTCS
+  - Retries on 403 (Adobe race condition)
+*/
 const { pipeline } = require('stream');
 const { promisify } = require('util');
 const streamPipeline = promisify(pipeline);
@@ -391,14 +410,14 @@ async function overwritePdf(agreementId, tries = 0) {
       {
         responseType: 'stream',
         headers: { Authorization: `Bearer ${token}` },
-        maxContentLength: 20 * 1024 * 1024 // 20 MB limit
+        maxContentLength: 20 * 1024 * 1024 // 20 MB
       }
     );
 
     await streamPipeline(rsp.data, fs.createWriteStream(filePath));
     logger.info(`PDF Overwritten: ${filePath}`);
 
-    const fileBuffer = fs.readFileSync(filePath); // optional: avoid if `uploadToFolder` supports streams
+    const fileBuffer = fs.readFileSync(filePath); // Could refactor for stream support if needed
     await uploadToFolder(attachId, fileBuffer, name);
     logger.info(`Sent to folder ${attachId} on Content Server`);
   } catch (e) {
@@ -410,17 +429,21 @@ async function overwritePdf(agreementId, tries = 0) {
   }
 }
 
+/*
+  === Keepalive / Self-ping (production only) ===
+  - Prevents Render/hosting from idling the service
+*/
 if (process.env.NODE_ENV === 'production') {
   setInterval(() => {
     axios.get(`${NGROK_HOST}/health`)
-      .then(() => logger.info('[KEEPALIVE] Ping interno OK'))
-      .catch(err => logger.warn(`[KEEPALIVE] Falha no ping interno: ${err.message}`));
+      .then(() => logger.info('[KEEPALIVE] Internal ping OK'))
+      .catch(err => logger.warn(`[KEEPALIVE] Internal ping failed: ${err.message}`));
   }, 1000 * 60 * 10);
 }
 
-
-
-
+/*
+  === Basic Auth for /auth and /logs endpoints ===
+*/
 function basicAuth(req, res, next) {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith('Basic ')) {
@@ -438,6 +461,10 @@ function basicAuth(req, res, next) {
   next();
 }
 
+/*
+  === Audit Log Download Endpoint ===
+  - Allows admin users to fetch/download the log file via HTTP basic auth
+*/
 app.get('/logs', basicAuth, (req, res) => {
   const logFilePath = process.env.NODE_ENV === 'production'
     ? '/tmp/audit.log'
@@ -448,9 +475,12 @@ app.get('/logs', basicAuth, (req, res) => {
   res.download(logFilePath, 'server.log');
 });
 
-
+// Fallback handler for unknown endpoints
 app.use((_, res) => res.status(404).json({ error: 'Endpoint not found' }));
 
+/*
+  === Server Startup ===
+*/
 app.listen(PORT, () => {
   logger.info(
     `Server started successfully\n` +
