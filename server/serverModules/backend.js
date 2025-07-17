@@ -271,7 +271,7 @@ app.post('/start', verifySignature, async (req, res) => {
   }
 });
 
-// Rota para streaming de logs
+// Logs Streaming route
 app.get('/logs/stream', basicAuth, (req, res) => {
   const logFilePath = process.env.NODE_ENV === 'production'
     ? '/tmp/audit.log'
@@ -282,21 +282,28 @@ app.get('/logs/stream', basicAuth, (req, res) => {
   }
 
   res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
+    'Content-Type':    'text/event-stream',
+    'Cache-Control':   'no-cache',
+    'Connection':      'keep-alive'
   });
 
-  const watcher = fs.watch(logFilePath, { encoding: 'utf8' }, () => {
-    const content = fs.readFileSync(logFilePath, 'utf8');
-    const lines = content.trim().split('\n');
-    const lastLine = lines[lines.length - 1];
-    res.write(`data: ${lastLine}\n\n`);
+  // 1) envia todo o conteúdo atual logo que o cliente conecta
+  const all = fs.readFileSync(logFilePath, 'utf8')
+                .split('\n')
+                .filter(l => l.trim() !== '');
+  all.forEach(line => res.write(`data: ${line}\n\n`));
+
+  // 2) depois, “fique de olho” em mudanças e envie só a última linha
+  const watcher = fs.watch(logFilePath, { encoding: 'utf8' }, (evtType) => {
+    if (evtType !== 'change') return;
+    const lines = fs.readFileSync(logFilePath, 'utf8')
+                    .trim()
+                    .split('\n');
+    const last = lines[lines.length - 1];
+    res.write(`data: ${last}\n\n`);
   });
 
-  req.on('close', () => {
-    watcher.close();
-  });
+  req.on('close', () => watcher.close());
 });
 
 
