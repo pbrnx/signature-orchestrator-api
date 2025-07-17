@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Logs Realtime</title>
+  <style>
+    body { background: #111; color: #0f0; font-family: monospace; padding: 1em; }
+    pre { max-height: 90vh; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <h2>Logs Realtime</h2>
+  <pre id="log">Conectando...</pre>
+
+  <script>
+    const evtSource = new EventSource("/logs/stream");
+
+    evtSource.onmessage = function (e) {
+      const logDiv = document.getElementById('log');
+      logDiv.innerText += e.data + '\n';
+      logDiv.scrollTop = logDiv.scrollHeight; // auto-scroll
+    };
+
+    evtSource.onerror = function (e) {
+      const logDiv = document.getElementById('log');
+      logDiv.innerText += "\n[Erro en conectarse al servidor]\n";
+      evtSource.close();
+    };
+  </script>
+</body>
+</html>

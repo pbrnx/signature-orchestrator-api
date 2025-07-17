@@ -50,7 +50,6 @@ const AUTH_BASE = 'https://secure.na4.adobesign.com';
 const crypto = require('crypto');
 
 // === Admin Routes for OAuth Flow ===
-
 // Route: Login with Adobe Sign - redirects to consent page with needed scopes
 app.get('/admin/login', (_, res) => {
   const SCOPES = [
@@ -68,6 +67,8 @@ app.get('/admin/login', (_, res) => {
     `&scope=${encodeURIComponent(SCOPES.join(' '))}`;
   res.redirect(url);
 });
+
+
 
 // Route: OAuth2 callback - exchanges code for tokens and saves them locally
 app.get('/admin/callback', async (req, res) => {
@@ -105,6 +106,7 @@ app.get('/health', (_, res) => res.status(200).json({ status: 'ok' }));
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '../static')));
 let lastRouteGroup = null;
 
 app.use((req, _, next) => {
@@ -268,6 +270,35 @@ app.post('/start', verifySignature, async (req, res) => {
     res.status(500).json({ error: raw || e.message });
   }
 });
+
+// Rota para streaming de logs
+app.get('/logs/stream', basicAuth, (req, res) => {
+  const logFilePath = process.env.NODE_ENV === 'production'
+    ? '/tmp/audit.log'
+    : path.join(__dirname, '../logs/audit.log');
+
+  if (!fs.existsSync(logFilePath)) {
+    return res.status(404).send('Log file not found.');
+  }
+
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+  });
+
+  const watcher = fs.watch(logFilePath, { encoding: 'utf8' }, () => {
+    const content = fs.readFileSync(logFilePath, 'utf8');
+    const lines = content.trim().split('\n');
+    const lastLine = lines[lines.length - 1];
+    res.write(`data: ${lastLine}\n\n`);
+  });
+
+  req.on('close', () => {
+    watcher.close();
+  });
+});
+
 
 /*
   === Workflow Advancement Handler ===
