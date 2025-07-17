@@ -293,15 +293,22 @@ app.get('/logs/stream', basicAuth, (req, res) => {
                 .filter(l => l.trim() !== '');
   all.forEach(line => res.write(`data: ${line}\n\n`));
 
-  // 2) depois, “fique de olho” em mudanças e envie só a última linha
-  const watcher = fs.watch(logFilePath, { encoding: 'utf8' }, (evtType) => {
-    if (evtType !== 'change') return;
-    const lines = fs.readFileSync(logFilePath, 'utf8')
-                    .trim()
-                    .split('\n');
-    const last = lines[lines.length - 1];
-    res.write(`data: ${last}\n\n`);
+let lastLineCount = all.length;
+
+const watcher = fs.watch(logFilePath, { encoding: 'utf8' }, (evtType) => {
+  if (evtType !== 'change') return;
+
+  const lines = fs.readFileSync(logFilePath, 'utf8')
+                  .trim()
+                  .split('\n');
+
+  const newLines = lines.slice(lastLineCount);
+  newLines.forEach(line => {
+    if (line.trim()) res.write(`data: ${line}\n\n`);
   });
+
+  lastLineCount = lines.length;
+});
 
   req.on('close', () => watcher.close());
 });
