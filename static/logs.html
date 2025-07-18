@@ -242,7 +242,8 @@ select:hover {
   const evtSource = new EventSource('/logs/stream');
 
   // Regex para extrair timestamp mesmo dentro de colchetes
-  const tsRe = /\[?(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)[^\]]*\]?/;
+  const tsRe = /\[?(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3})(?:Z| UTC)?[^\]]*\]?/;
+
 
   // Parseia cada linha de log
   function parseLogLine(line) {
