@@ -382,8 +382,8 @@ app.post('/webhook', express.json({ limit: '10mb' }), async (req, res) => {
     return res.status(400).send('Invalid webhook payload');
   }
   // Log first 4KB of webhook for diagnostics
-  const short = JSON.stringify(payload).slice(0, 4000);
-  logger.info(`Webhook raw (trunc): ${short}${payload.length > 4000 ? '…' : ''}`);
+  //const short = JSON.stringify(payload).slice(0, 4000);
+  //logger.info(`Webhook raw (trunc): ${short}${payload.length > 4000 ? '…' : ''}`);
 
   // Parse core event info from Adobe payload (defensive for different schemas)
   const agreementId = payload.event?.agreementId || payload.agreement?.id || payload.agreementId;
@@ -481,8 +481,8 @@ async function overwritePdf(agreementId, tries = 0) {
 if (process.env.NODE_ENV === 'production') {
   setInterval(() => {
     axios.get(`${NGROK_HOST}/health`)
-      .then(() => logger.info('[KEEPALIVE] Internal ping OK'))
-      .catch(err => logger.warn(`[KEEPALIVE] Internal ping failed: ${err.message}`));
+      .then(() => console.log('[KEEPALIVE] Internal ping OK'))
+      .catch(err => console.log(`[KEEPALIVE] Internal ping failed: ${err.message}`));
   }, 1000 * 60 * 10);
 }
 
