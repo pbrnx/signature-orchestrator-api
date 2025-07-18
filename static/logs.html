@@ -112,8 +112,6 @@
       box-shadow: 0 0 0.5px #11cfff55;
       border-left: 3.5px solid transparent;
       line-height: 1.42em;
-      cursor: pointer;
-      user-select: text;
     }
     .log-line.INFO {
       border-color: #37e4b7;
@@ -166,55 +164,18 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
-    /* Agrupamento */
-    .group-log {
-      border-radius: 10px;
-      margin-bottom: 0.7em;
-      box-shadow: 0 0 0 2px #233b7d44;
-      background: linear-gradient(120deg, #232445cc 80%, #20415030 100%);
-      transition: box-shadow 0.18s, border 0.18s;
-      position: relative;
-    }
-    .group-header {
-      cursor: pointer;
-      background: #21234d77;
-      border-radius: 9px 9px 0 0;
-      font-weight: 600;
-      transition: background .18s;
-      user-select: none;
-      min-height: 1.8em;
-    }
-    .group-header:hover {
-      background: #1c307099;
-    }
-    .group-body {
-      display: none;
-      padding-left: 2.2em;
-    }
-    .group-log.expanded .group-body {
-      display: block;
-    }
-    .group-log.expanded .group-header:after {
-      content: "▲";
-      float: right;
-      font-size: 1em;
-      color: #52f9ff;
-      margin-right: 0.6em;
-    }
-    .group-header:after {
-      content: "▼";
-      float: right;
-      font-size: 1em;
-      color: #52f9ff;
-      margin-right: 0.6em;
-    }
-    /* Destaque */
-    .selected-log, .group-log.selected-log {
-      border: 2.5px solid #5ee4ff !important;
-      box-shadow: 0 0 0 4px #59eaff55, 0 0 16px #44ffff55 !important;
-      z-index: 2;
-    }
-    /* Responsive */
+
+#controls button:hover,
+#controls button.active:hover,
+select:hover {
+  background: linear-gradient(90deg, #47e7fa 30%, #8f6fff 70%) !important;
+  color: #fff;
+  box-shadow: 0 0 0 2px #93d1f8;
+  transition: background 0.15s, color 0.15s;
+  cursor: pointer;
+}
+
+
     @keyframes fadeInSlide {
       from { opacity: 0; transform: translateY(20px) scale(.99);}
       to   { opacity: 1; transform: translateY(0) scale(1);}
@@ -259,57 +220,23 @@
     let autoScroll = true;
     let evtSource = new EventSource('/logs/stream');
     let logs = [];
-    let lastSelected = null;
 
-function groupLogs(logs) {
-  const groups = [];
-  let current = null;
-
-  for (let i = 0; i < logs.length; ++i) {
-    const log = logs[i];
-    if (!current || log.level !== current.level || log.timestamp !== current.timestamp) {
-      current = { timestamp: log.timestamp, level: log.level, items: [log] };
-      groups.push(current);
-    } else {
-      current.items.push(log);
+    function renderLogs() {
+      logList.innerHTML = '';
+      logs.forEach(obj => {
+        if (shouldDisplay(obj)) appendLogLine(obj, false);
+      });
+      scrollIfNeeded();
     }
-  }
-  return groups;
-}
 
-function renderLogs() {
-  logList.innerHTML = '';
-  groupLogs(logs.filter(shouldDisplay)).forEach((grp) => {
-    // Cria caixa do grupo (card)
-    const groupDiv = document.createElement('div');
-    groupDiv.className = `group-log ${grp.level}`;
-    groupDiv.setAttribute('tabindex', 0);
-
-    grp.items.forEach(item => {
-      const line = document.createElement('div');
-      line.className = `log-line ${item.level}`;
-      line.innerHTML = `
-        <span class="timestamp">${item.timestamp}</span>
-        <span class="level">${item.level}</span>
-        <span class="message">${highlightSearch(item.message)}</span>
-      `;
-      line.onclick = function(e) { highlightLog(line); };
-      groupDiv.appendChild(line);
-    });
-    logList.appendChild(groupDiv);
-  });
-  scrollIfNeeded();
-}
-
-    function appendLogLine(obj, scroll = true, idx = null) {
+    function appendLogLine({ timestamp, level, message, raw }, scroll = true) {
       const div = document.createElement('div');
-      div.className = `log-line ${obj.level}`;
+      div.className = `log-line ${level}`;
       div.innerHTML = `
-        <span class="timestamp">${obj.timestamp}</span>
-        <span class="level">${obj.level}</span>
-        <span class="message">${highlightSearch(obj.message)}</span>
+        <span class="timestamp">${timestamp}</span>
+        <span class="level">${level}</span>
+        <span class="message">${highlightSearch(message)}</span>
       `;
-      div.onclick = function(e) { highlightLog(div); };
       logList.appendChild(div);
       if (scroll && autoScroll) scrollIfNeeded();
     }
@@ -348,36 +275,27 @@ function renderLogs() {
       if (autoScroll) logList.scrollTop = logList.scrollHeight;
     }
 
-function parseLogLine(line) {
-  // Exemplo esperado: 2025-07-18T14:34:09.302Z | LEVEL | Mensagem
-  let m = line.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s+\|\s+(\w+)\s+\|\s+([\s\S]*)$/);
-  let base = {
-    timestamp: new Date().toISOString(),
-    level: 'INFO',
-    message: line,
-    raw: line
-  };
-
-  if (m) {
-    base.timestamp = m[1];
-    base.level = m[2];
-    base.message = m[3];
-
-    // Busca nível real dentro da mensagem, se existir (prioridade)
-    const levelInMsg = base.message.match(/\[(INFO|WARN|ERROR|EVENT)\]/i);
-    if (levelInMsg) {
-      base.level = levelInMsg[1].toUpperCase();
+    function parseLogLine(line) {
+      // Esperado: 2025-07-18T14:34:09.302Z | LEVEL | Mensagem
+      const m = line.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z)\s+\|\s+(\w+)\s+\|\s+([\s\S]*)$/);
+      return m ? {
+        timestamp: m[1],
+        level: m[2],
+        message: m[3],
+        raw: line
+      } : {
+        timestamp: new Date().toISOString(),
+        level: 'INFO',
+        message: line,
+        raw: line
+      };
     }
-  }
-
-  return base;
-}
 
     evtSource.onmessage = e => {
       if (paused) return;
       const obj = parseLogLine(e.data);
       logs.push(obj);
-      renderLogs();
+      if (shouldDisplay(obj)) appendLogLine(obj);
     };
     evtSource.onerror = () => {
       const obj = {
@@ -387,16 +305,9 @@ function parseLogLine(line) {
         raw: "Conexão perdida"
       };
       logs.push(obj);
-      renderLogs();
+      appendLogLine(obj);
       evtSource.close();
     };
-
-    function highlightLog(element) {
-      if (lastSelected) lastSelected.classList.remove('selected-log');
-      element.classList.add('selected-log');
-      lastSelected = element;
-      element.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    }
   </script>
 </body>
 </html>
