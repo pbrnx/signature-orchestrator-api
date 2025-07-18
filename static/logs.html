@@ -159,6 +159,18 @@
     .log-line.ERROR .level { background: linear-gradient(90deg,#641e3a 0%,#ff377f 90%); color: #ffe6ec;}
     .log-line.EVENT .level { background: linear-gradient(90deg,#184b74 0%,#62dfff 100%); color: #c2f7ff;}
 
+    .log-group{
+  border:1.5px solid #383b86;
+  border-radius:12px;
+  padding:0.4em 0.2em;
+  margin-bottom:0.55em;
+  background:rgba(18,20,30,0.55);
+  box-shadow:0 0 8px #2740a355;
+}
+.log-group .log-line{         /* já existe, mas garante que não estoure */
+  margin:2px 6px;
+}
+
     .message {
       flex: 1;
       white-space: pre-wrap;
@@ -220,24 +232,36 @@ select:hover {
     let autoScroll = true;
     let evtSource = new EventSource('/logs/stream');
     let logs = [];
+    let currentGroupEl = null;
 
     function renderLogs() {
       logList.innerHTML = '';
+      currentGroupEl = null;
       logs.forEach(obj => {
         if (shouldDisplay(obj)) appendLogLine(obj, false);
       });
       scrollIfNeeded();
     }
 
-    function appendLogLine({ timestamp, level, message, raw }, scroll = true) {
+    function appendLogLine({ timestamp, level, message }, scroll = true) {
+      const isChild = message.trim().startsWith('→');
+
+      // cria “caixona” se for raiz
+      if (!isChild || !currentGroupEl) {
+        currentGroupEl = document.createElement('div');
+        currentGroupEl.className = 'log-group';
+        logList.appendChild(currentGroupEl);
+      }
+
+      // cria a linha real
       const div = document.createElement('div');
       div.className = `log-line ${level}`;
       div.innerHTML = `
-        <span class="timestamp">${timestamp}</span>
-        <span class="level">${level}</span>
-        <span class="message">${highlightSearch(message)}</span>
-      `;
-      logList.appendChild(div);
+          <span class="timestamp">${timestamp}</span>
+          <span class="level">${level}</span>
+          <span class="message">${highlightSearch(message)}</span>`;
+      currentGroupEl.appendChild(div);
+
       if (scroll && autoScroll) scrollIfNeeded();
     }
 
@@ -274,22 +298,29 @@ select:hover {
     function scrollIfNeeded() {
       if (autoScroll) logList.scrollTop = logList.scrollHeight;
     }
-
     function parseLogLine(line) {
-      // Esperado: 2025-07-18T14:34:09.302Z | LEVEL | Mensagem
-      const m = line.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z)\s+\|\s+(\w+)\s+\|\s+([\s\S]*)$/);
-      return m ? {
-        timestamp: m[1],
-        level: m[2],
-        message: m[3],
-        raw: line
-      } : {
-        timestamp: new Date().toISOString(),
-        level: 'INFO',
-        message: line,
-        raw: line
-      };
-    }
+  /* Formatos aceitos
+     A) 2025-07-18T13:50:06.137Z | INFO | mensagem
+     B) 2025-07-18T13:50:06.137Z INFO  mensagem
+     C) 2025-07-18T13:50:06.137Z      mensagem [WARN] / [ERROR] …
+  */
+  const piped = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s*\|\s*(\w+)\s*\|\s*(.+)$/;
+  const spaced = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s+(\w+)\s+(.+)$/;
+
+  let m = line.match(piped) || line.match(spaced);
+  let level = 'INFO', msg, ts;
+
+  if (m) {                    // A ou B
+    [, ts, level, msg] = m;
+  } else {                    // C – sem nível explícito
+    ts  = line.slice(0, 24);
+    msg = line.slice(25);
+    const tag = msg.match(/\[(INFO|WARN|ERROR|EVENT)\]/i);
+    if (tag) level = tag[1].toUpperCase();
+  }
+
+  return { timestamp: ts, level, message: msg.trim(), raw: line };
+}
 
     evtSource.onmessage = e => {
       if (paused) return;

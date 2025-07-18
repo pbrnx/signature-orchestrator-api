@@ -23,10 +23,10 @@ function load() {
       tok = JSON.parse(content);
       //  console.log('[DEBUG] TOKEN LOADED:', tok);
     } catch (err) {
-      logger.error('[ERROR] Failed to read tokens.json:', err.message);
+      logger.error('Failed to read tokens.json:', err.message);
     }
   } else {
-    logger.warn('[WARN] tokens.json NOT FOUND');
+    logger.warn('tokens.json NOT FOUND');
   }
 }
 
@@ -52,7 +52,7 @@ async function ensureToken() {
   }
 
   if (!tok.refresh_token) {
-    logger.error('[ERROR] Missing refresh token');
+    logger.error('Missing refresh token');
     throw new Error('REFRESH_TOKEN_MISSING');
   }
 
@@ -71,7 +71,7 @@ async function ensureToken() {
     // console.log('[DEBUG] Token refreshed');
     return tok.access_token;
   } catch (err) {
-    logger.error('[ERROR] Refresh failed:', err.response?.data || err.message);
+    logger.error('Refresh failed:', err.response?.data || err.message);
     throw err;
   }
 }
