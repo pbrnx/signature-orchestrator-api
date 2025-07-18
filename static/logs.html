@@ -261,74 +261,45 @@
     let logs = [];
     let lastSelected = null;
 
-    function groupLogs(logs) {
-    const groups = [];
-    let current = null;
-    const GROUP_MS = 2; // ou 2ms se quiser ser mais restritivo
+function groupLogs(logs) {
+  const groups = [];
+  let current = null;
 
-    for (let i = 0; i < logs.length; ++i) {
-      const log = logs[i];
-      const t = new Date(log.timestamp).getTime();
-      if (
-        !current ||
-        log.level !== current.level ||
-        Math.abs(new Date(current.timestamp).getTime() - t) > GROUP_MS
-      ) {
-        current = { timestamp: log.timestamp, level: log.level, items: [log] };
-        groups.push(current);
-      } else {
-        current.items.push(log);
-      }
+  for (let i = 0; i < logs.length; ++i) {
+    const log = logs[i];
+    if (!current || log.level !== current.level || log.timestamp !== current.timestamp) {
+      current = { timestamp: log.timestamp, level: log.level, items: [log] };
+      groups.push(current);
+    } else {
+      current.items.push(log);
     }
-    return groups;
   }
+  return groups;
+}
 
-    function renderLogs() {
-      logList.innerHTML = '';
-      groupLogs(logs.filter(shouldDisplay)).forEach((grp, idx) => {
-        if (grp.items.length === 1) {
-          appendLogLine(grp.items[0], true, idx);
-        } else {
-          const groupDiv = document.createElement('div');
-          groupDiv.className = `group-log ${grp.level}`;
-          groupDiv.setAttribute('tabindex', 0);
-          // Click header: highlight + expand/collapse
-          const header = document.createElement('div');
-          header.className = `group-header log-line ${grp.level}`;
-          header.innerHTML = `
-            <span class="timestamp">${grp.timestamp}</span>
-            <span class="level">${grp.level}</span>
-            <span class="message">(${grp.items.length} logs agrupados)</span>
-          `;
-          groupDiv.appendChild(header);
+function renderLogs() {
+  logList.innerHTML = '';
+  groupLogs(logs.filter(shouldDisplay)).forEach((grp) => {
+    // Cria caixa do grupo (card)
+    const groupDiv = document.createElement('div');
+    groupDiv.className = `group-log ${grp.level}`;
+    groupDiv.setAttribute('tabindex', 0);
 
-          const body = document.createElement('div');
-          body.className = 'group-body';
-          grp.items.forEach(item => {
-            const line = document.createElement('div');
-            line.className = `log-line ${item.level}`;
-            line.innerHTML = `
-              <span class="timestamp"></span>
-              <span class="level"></span>
-              <span class="message">${highlightSearch(item.message)}</span>
-            `;
-            line.onclick = function(e) { 
-              e.stopPropagation();
-              highlightLog(line);
-            };
-            body.appendChild(line);
-          });
-          groupDiv.appendChild(body);
-          logList.appendChild(groupDiv);
-
-          header.onclick = function(e) {
-            highlightLog(groupDiv);
-            groupDiv.classList.toggle('expanded');
-          };
-        }
-      });
-      scrollIfNeeded();
-    }
+    grp.items.forEach(item => {
+      const line = document.createElement('div');
+      line.className = `log-line ${item.level}`;
+      line.innerHTML = `
+        <span class="timestamp">${item.timestamp}</span>
+        <span class="level">${item.level}</span>
+        <span class="message">${highlightSearch(item.message)}</span>
+      `;
+      line.onclick = function(e) { highlightLog(line); };
+      groupDiv.appendChild(line);
+    });
+    logList.appendChild(groupDiv);
+  });
+  scrollIfNeeded();
+}
 
     function appendLogLine(obj, scroll = true, idx = null) {
       const div = document.createElement('div');
@@ -377,21 +348,30 @@
       if (autoScroll) logList.scrollTop = logList.scrollHeight;
     }
 
-    function parseLogLine(line) {
-      // Esperado: 2025-07-18T14:34:09.302Z | LEVEL | Mensagem
-      const m = line.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z)\s+\|\s+(\w+)\s+\|\s+([\s\S]*)$/);
-      return m ? {
-        timestamp: m[1],
-        level: m[2],
-        message: m[3],
-        raw: line
-      } : {
-        timestamp: new Date().toISOString(),
-        level: 'INFO',
-        message: line,
-        raw: line
-      };
+function parseLogLine(line) {
+  // Exemplo esperado: 2025-07-18T14:34:09.302Z | LEVEL | Mensagem
+  let m = line.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s+\|\s+(\w+)\s+\|\s+([\s\S]*)$/);
+  let base = {
+    timestamp: new Date().toISOString(),
+    level: 'INFO',
+    message: line,
+    raw: line
+  };
+
+  if (m) {
+    base.timestamp = m[1];
+    base.level = m[2];
+    base.message = m[3];
+
+    // Busca nível real dentro da mensagem, se existir (prioridade)
+    const levelInMsg = base.message.match(/\[(INFO|WARN|ERROR|EVENT)\]/i);
+    if (levelInMsg) {
+      base.level = levelInMsg[1].toUpperCase();
     }
+  }
+
+  return base;
+}
 
     evtSource.onmessage = e => {
       if (paused) return;

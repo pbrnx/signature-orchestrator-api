@@ -113,7 +113,7 @@ app.use((req, _, next) => {
   const currentGroup = `${req.method} ${req.path}`;
   if (lastRouteGroup && lastRouteGroup !== currentGroup) console.log('');
   lastRouteGroup = currentGroup;
-  logger.info(`${req.method} ${req.originalUrl}`);
+  //logger.info(`${req.method} ${req.originalUrl}`);
 
   // Log POST /start with extra context (who/what is being signed)
   if (req.method === 'POST' && req.path === '/start') {
