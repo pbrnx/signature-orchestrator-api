@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 require('dotenv').config();
+const logger = require('../serverModules/logger');
 
 const API_BASE = 'https://api.na4.adobesign.com';
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -22,10 +23,10 @@ function load() {
       tok = JSON.parse(content);
       //  console.log('[DEBUG] TOKEN LOADED:', tok);
     } catch (err) {
-      console.error('[ERROR] Failed to read tokens.json:', err.message);
+      logger.error('[ERROR] Failed to read tokens.json:', err.message);
     }
   } else {
-    console.warn('[WARN] tokens.json NOT FOUND');
+    logger.warn('[WARN] tokens.json NOT FOUND');
   }
 }
 
@@ -51,7 +52,7 @@ async function ensureToken() {
   }
 
   if (!tok.refresh_token) {
-    console.error('[ERROR] Missing refresh token');
+    logger.error('[ERROR] Missing refresh token');
     throw new Error('REFRESH_TOKEN_MISSING');
   }
 
@@ -70,7 +71,7 @@ async function ensureToken() {
     // console.log('[DEBUG] Token refreshed');
     return tok.access_token;
   } catch (err) {
-    console.error('[ERROR] Refresh failed:', err.response?.data || err.message);
+    logger.error('[ERROR] Refresh failed:', err.response?.data || err.message);
     throw err;
   }
 }

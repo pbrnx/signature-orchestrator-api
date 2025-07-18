@@ -112,6 +112,8 @@
       box-shadow: 0 0 0.5px #11cfff55;
       border-left: 3.5px solid transparent;
       line-height: 1.42em;
+      cursor: pointer;
+      user-select: text;
     }
     .log-line.INFO {
       border-color: #37e4b7;
@@ -164,18 +166,55 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
-
-#controls button:hover,
-#controls button.active:hover,
-select:hover {
-  background: linear-gradient(90deg, #47e7fa 30%, #8f6fff 70%) !important;
-  color: #fff;
-  box-shadow: 0 0 0 2px #93d1f8;
-  transition: background 0.15s, color 0.15s;
-  cursor: pointer;
-}
-
-
+    /* Agrupamento */
+    .group-log {
+      border-radius: 10px;
+      margin-bottom: 0.7em;
+      box-shadow: 0 0 0 2px #233b7d44;
+      background: linear-gradient(120deg, #232445cc 80%, #20415030 100%);
+      transition: box-shadow 0.18s, border 0.18s;
+      position: relative;
+    }
+    .group-header {
+      cursor: pointer;
+      background: #21234d77;
+      border-radius: 9px 9px 0 0;
+      font-weight: 600;
+      transition: background .18s;
+      user-select: none;
+      min-height: 1.8em;
+    }
+    .group-header:hover {
+      background: #1c307099;
+    }
+    .group-body {
+      display: none;
+      padding-left: 2.2em;
+    }
+    .group-log.expanded .group-body {
+      display: block;
+    }
+    .group-log.expanded .group-header:after {
+      content: "▲";
+      float: right;
+      font-size: 1em;
+      color: #52f9ff;
+      margin-right: 0.6em;
+    }
+    .group-header:after {
+      content: "▼";
+      float: right;
+      font-size: 1em;
+      color: #52f9ff;
+      margin-right: 0.6em;
+    }
+    /* Destaque */
+    .selected-log, .group-log.selected-log {
+      border: 2.5px solid #5ee4ff !important;
+      box-shadow: 0 0 0 4px #59eaff55, 0 0 16px #44ffff55 !important;
+      z-index: 2;
+    }
+    /* Responsive */
     @keyframes fadeInSlide {
       from { opacity: 0; transform: translateY(20px) scale(.99);}
       to   { opacity: 1; transform: translateY(0) scale(1);}
@@ -220,23 +259,86 @@ select:hover {
     let autoScroll = true;
     let evtSource = new EventSource('/logs/stream');
     let logs = [];
+    let lastSelected = null;
+
+    function groupLogs(logs) {
+    const groups = [];
+    let current = null;
+    const GROUP_MS = 2; // ou 2ms se quiser ser mais restritivo
+
+    for (let i = 0; i < logs.length; ++i) {
+      const log = logs[i];
+      const t = new Date(log.timestamp).getTime();
+      if (
+        !current ||
+        log.level !== current.level ||
+        Math.abs(new Date(current.timestamp).getTime() - t) > GROUP_MS
+      ) {
+        current = { timestamp: log.timestamp, level: log.level, items: [log] };
+        groups.push(current);
+      } else {
+        current.items.push(log);
+      }
+    }
+    return groups;
+  }
 
     function renderLogs() {
       logList.innerHTML = '';
-      logs.forEach(obj => {
-        if (shouldDisplay(obj)) appendLogLine(obj, false);
+      groupLogs(logs.filter(shouldDisplay)).forEach((grp, idx) => {
+        if (grp.items.length === 1) {
+          appendLogLine(grp.items[0], true, idx);
+        } else {
+          const groupDiv = document.createElement('div');
+          groupDiv.className = `group-log ${grp.level}`;
+          groupDiv.setAttribute('tabindex', 0);
+          // Click header: highlight + expand/collapse
+          const header = document.createElement('div');
+          header.className = `group-header log-line ${grp.level}`;
+          header.innerHTML = `
+            <span class="timestamp">${grp.timestamp}</span>
+            <span class="level">${grp.level}</span>
+            <span class="message">(${grp.items.length} logs agrupados)</span>
+          `;
+          groupDiv.appendChild(header);
+
+          const body = document.createElement('div');
+          body.className = 'group-body';
+          grp.items.forEach(item => {
+            const line = document.createElement('div');
+            line.className = `log-line ${item.level}`;
+            line.innerHTML = `
+              <span class="timestamp"></span>
+              <span class="level"></span>
+              <span class="message">${highlightSearch(item.message)}</span>
+            `;
+            line.onclick = function(e) { 
+              e.stopPropagation();
+              highlightLog(line);
+            };
+            body.appendChild(line);
+          });
+          groupDiv.appendChild(body);
+          logList.appendChild(groupDiv);
+
+          header.onclick = function(e) {
+            highlightLog(groupDiv);
+            groupDiv.classList.toggle('expanded');
+          };
+        }
       });
       scrollIfNeeded();
     }
 
-    function appendLogLine({ timestamp, level, message, raw }, scroll = true) {
+    function appendLogLine(obj, scroll = true, idx = null) {
       const div = document.createElement('div');
-      div.className = `log-line ${level}`;
+      div.className = `log-line ${obj.level}`;
       div.innerHTML = `
-        <span class="timestamp">${timestamp}</span>
-        <span class="level">${level}</span>
-        <span class="message">${highlightSearch(message)}</span>
+        <span class="timestamp">${obj.timestamp}</span>
+        <span class="level">${obj.level}</span>
+        <span class="message">${highlightSearch(obj.message)}</span>
       `;
+      div.onclick = function(e) { highlightLog(div); };
       logList.appendChild(div);
       if (scroll && autoScroll) scrollIfNeeded();
     }
@@ -295,7 +397,7 @@ select:hover {
       if (paused) return;
       const obj = parseLogLine(e.data);
       logs.push(obj);
-      if (shouldDisplay(obj)) appendLogLine(obj);
+      renderLogs();
     };
     evtSource.onerror = () => {
       const obj = {
@@ -305,9 +407,16 @@ select:hover {
         raw: "Conexão perdida"
       };
       logs.push(obj);
-      appendLogLine(obj);
+      renderLogs();
       evtSource.close();
     };
+
+    function highlightLog(element) {
+      if (lastSelected) lastSelected.classList.remove('selected-log');
+      element.classList.add('selected-log');
+      lastSelected = element;
+      element.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
   </script>
 </body>
 </html>
